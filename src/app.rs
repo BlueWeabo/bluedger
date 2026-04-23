@@ -1,26 +1,25 @@
-use std::ptr::null;
+use std::sync::mpsc::{channel, Receiver, Sender};
 
-use egui::{Id, Rangef};
+use egui::{Id, Rangef, Vec2};
+use rfd::{AsyncFileDialog};
 
-/// We derive Deserialize/Serialize so we can persist app state on shutdown.
 #[derive(serde::Deserialize, serde::Serialize)]
-#[serde(default)] // if we add new fields, give them default values when deserializing old state
+#[serde(default)]
 pub struct TemplateApp {
-    // Example stuff:
-    label: String,
     last_loaded_file_contents: String,
-
-    //##[serde(skip)] // This how you opt-out of serialization of a field
-    value: f32,
+    year: String,
+    month: String,
+    #[serde(skip)]
+    text_channel: (Sender<String>, Receiver<String>),
 }
 
 impl Default for TemplateApp {
     fn default() -> Self {
         Self {
-            // Example stuff:
-            label: "Hello World!".to_owned(),
             last_loaded_file_contents: "test".to_owned(),
-            value: 2.7,
+            year: "".to_owned(),
+            month: "".to_owned(),
+            text_channel: channel(),
         }
     }
 }
@@ -46,7 +45,10 @@ impl eframe::App for TemplateApp {
     fn ui(&mut self, ui: &mut egui::Ui, _frame: &mut eframe::Frame) {
         // Put your widgets into a `SidePanel`, `TopBottomPanel`, `CentralPanel`, `Window` or `Area`.
         // For inspiration and more examples, go to https://emilk.github.io/egui
-        let TEXT_EDITOR_ID : Id = Id::new("text_editor");
+        let text_editor_id : Id = Id::new("text_editor");
+        if let Ok(text) = self.text_channel.1.try_recv() {
+            self.last_loaded_file_contents = text;
+        }
 
         egui::Panel::top("header").show_inside(ui, |ui|{
             egui::MenuBar::new().ui(ui, |ui| {
@@ -83,11 +85,50 @@ impl eframe::App for TemplateApp {
 
         let window_width = ui.ctx().input(|i| {i.content_rect()}).width();
         egui::Panel::left("text_editor_panel").size_range(Rangef::new(window_width * 0.2, window_width * 0.5)).show_inside(ui, |ui|{
-            ui.add_sized(ui.available_size(), egui::TextEdit::multiline(&mut self.last_loaded_file_contents).id(TEXT_EDITOR_ID));
+            ui.vertical(|ui| {
+                ui.horizontal(|ui| {
+                    let ui_available_size = ui.available_size();
+                    let available_size = Vec2::new(ui_available_size.x / 3.0, ui_available_size.y);
+                    ui.vertical(|ui| {
+                        ui.label("Year");
+                        ui.add_sized(available_size, egui::TextEdit::singleline(&mut self.year));
+                    });
+                    ui.vertical(|ui| {
+                        ui.label("Month");
+                        ui.add_sized(available_size, egui::TextEdit::singleline(&mut self.month));
+                    });
+                    let ui_available_size = ui.available_size();
+                    let available_size = Vec2::new(ui_available_size.x, ui_available_size.y / 2.0);
+                    ui.vertical(|ui| {
+                        if ui.add_sized(available_size, egui::Button::new("Load File")).clicked() {
+                            let sender = self.text_channel.0.clone();
+                            let task = AsyncFileDialog::new().pick_file();
+                            let ctx = ui.ctx().clone();
+                            execute(async move {
+                                let file = task.await;
+                                if let Some(file) = file {
+                                    let text = file.read().await;
+                                    let _ = sender.send(String::from_utf8_lossy(&text).to_string());
+                                    ctx.request_repaint();
+                                }
+                            });
+                        }
+                        if ui.add_sized(available_size, egui::Button::new("Save File")).clicked() {
+                            // save the file
+                        }
+                    });
+                });
+                ui.add_space(10.0);
+                egui::ScrollArea::vertical().show(ui, |ui| {
+                    ui.add_sized(ui.available_size(), egui::TextEdit::multiline(&mut self.last_loaded_file_contents).code_editor().id(text_editor_id));
+                });
+            });
         });
 
         egui::CentralPanel::default().show_inside(ui, |ui| {
-
+            ui.horizontal(|ui| {
+                ui.label("NOOO");
+            });
         });
     }
 }
@@ -104,4 +145,17 @@ fn powered_by_egui_and_eframe(ui: &mut egui::Ui) {
         );
         ui.label(".");
     });
+}
+
+#[cfg(not(target_arch = "wasm32"))]
+fn execute<F: Future<Output = ()> + Send + 'static>(f: F) {
+    // this is stupid... use any executor of your choice instead
+
+    use smol::future::block_on;
+    std::thread::spawn(move || block_on(f));
+}
+
+#[cfg(target_arch = "wasm32")]
+fn execute<F: Future<Output = ()> + 'static>(f: F) {
+    wasm_bindgen_futures::spawn_local(f);
 }

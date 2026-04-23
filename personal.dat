@@ -1,0 +1,2153 @@
+; Accounts
+
+; Assets
+account Assets:Cash
+    alias Cash
+account Assets:DSK
+    alias DSK Personal
+account Assets:Unicredit:Card
+    alias Unicredit Card
+account Assets:Unicredit:Savings
+    alias Unicredit Savings
+account Assets:Wise:Card
+    alias Wise
+account Assets:Wise:Savings:EUR
+    alias Wise Savings
+account Assets:Wise:Investment
+    alias Wise Investment
+account Assets:Edenred Food Vouchers
+    alias Food Vouchers
+
+; Expenses
+account Expenses:Takeout
+    alias Takeout
+account Expenses:Travel:Events
+    alias Events
+account Expenses:Travel:Hotel
+    alias Hotel
+account Expenses:Travel:Flight
+    alias Flight
+account Expenses:Travel:Bus
+    alias Bus
+account Expenses:Travel:Train
+    alias Train
+account Expenses:Merch:Hololive Shop
+    alias Hololive
+account Expenses:Merch:Collabs
+    alias Collabs
+account Expenses:Merch:Blackship
+    alias Blackship
+account Expenses:Merch:Zenmarket
+    alias Zenmarket
+account Expenses:Merch:MZ Proxy
+    alias MZ
+account Expenses:Merch:Fanmade
+    alias Fanmade
+account Expenses:Merch:Customs
+    alias Customs
+account Expenses:Merch:SecondHand
+    alias SecondHand
+account Expenses:InGame:Holoearth
+    alias Holoearth
+account Expenses:InGame:ArknightsEndfield
+    alias Endfield
+account Expenses:Groceries
+    alias Groceries
+account Expenses:Clothes
+    alias Clothes
+account Expenses:Gifts
+    alias Gifts
+account Expenses:Ash
+    alias Ash
+account Expenses:Fees:Wise
+    alias Wise Fees
+account Expenses:Fees:DSK
+    alias DSK Fees
+account Expenses:Fees:Unicredit
+    alias Unicredit Fees
+account Expenses:Fees:ATM
+    alias ATM Fees
+account Expenses:Ender
+    alias Ender
+account Expenses:University
+    alias University
+account Expenses:Subscription:Spotify
+    alias Spotify
+account Expenses:Subscription:Youtube Membership
+    alias Youtube Membership
+account Expenses:Subscription:Fanbox
+    alias Fanbox
+account Expenses:Subscription:Discord
+    alias Discord
+account Expenses:Subscription:Patreon
+    alias Patreon
+account Expenses:Subscription:Hololive Fanclub
+    alias Hololive Fanclub
+account Expenses:Subscription:Hoshiyomi Fanclub
+    alias Hoshiyomi Fanclub
+account Expenses:Subscription:Cloudflare
+    alias Cloudflare
+account Expenses:Subscription:Karaoke
+    alias Karaoke Sub
+account Expenses:Apartment Taxes
+    alias Apartment Taxes
+account Expenses:Bills
+    alias Bills
+account Expenses:JP Bills
+    alias JP Bills
+account Expenses:Equipment
+    alias Equipment
+account Expenses:Games
+    alias Games
+account Expenses:Donations
+    alias Donations
+account Expenses:Void
+    alias Void
+account Expenses:Medical:Dentist
+    alias Dentist
+account Expenses:Medical:Orthodentist
+    alias Orthodentist
+account Expenses:Entertainment
+    alias Entertainment
+account Expenses:Meetups
+    alias Meetups
+account Expenses:Father
+    alias Father Exp
+
+; Income
+account Income:Salary:SSV
+    alias SSV Inc
+account Income:Scholarship:TU Varna
+    alias Scholarship TU
+account Income:Other:Ash Game
+    alias AshGame
+account Income:Other:Ender
+    alias Ender Inc
+account Income:Other:Father
+    alias Father Inc
+account Income:Other:Grandma
+    alias Grandma Inc
+account Income:Other:Mother
+    alias Mother Inc
+account Income:Other:Friends
+    alias Friends Inc
+account Income:Other:Investment
+    alias Investment Inc
+account Income:Other:Wise Cashback
+    alias Wise Cashback
+
+; Liabilities
+account Liabilities:DSK:Trip Loan
+    alias DSK Loan
+account Liabilities:Friends
+    alias Holofans Loans
+
+; Equity
+account Equity:Starting Balance
+account Equity:Lent Money:Ender Debt
+    alias Ender Debt
+account Equity:Lent Money:Valentin
+    alias Valentin
+account Equity:Lent Money:Jay
+    alias Jay
+account Equity:Lent Money:GeroniBro
+    alias GeroniBro
+account Equity:Lent Money:Floofwolf
+    alias Floofwolf
+
+; Commodities
+commodity EUR
+    format 1.000,00 EUR
+commodity JPY
+commodity CNY
+commodity BGN
+    format 1.000,00 BGN
+    value s, d, t -> 1/1,95583 EUR
+commodity USD
+    format 1.000,00 USD
+commodity GBP
+    format 1.000,00 GBP
+
+; Transactions
+2025/11/6 * Starting Balance
+    Cash                            215 BGN
+    Cash                            2610 JPY
+    Cash                            35 CNY ((1/8 EUR))
+    DSK Personal                    23,97 EUR
+    Father Exp                      102,31 EUR
+    Unicredit Card                  276,25 EUR
+    Unicredit Savings               1 EUR
+    Wise                            186,46 EUR
+    Wise                            9999 JPY ((1/177,505 EUR))
+    Food Vouchers                   65,22 EUR
+    Liabilities:DSK:Trip Loan       -2151,79 EUR
+    Ender Debt                      2250 EUR
+    Floofwolf                       10000 JPY
+    Jay                             8800 JPY
+    Equity:Starting Balance
+
+2025/11/7 Breakfast
+    Unicredit Card                  -0,23 EUR
+    Unicredit Savings               -1 EUR
+    Takeout                         1,23 EUR
+
+2025/11/7 Lunch
+    Cash                            -6,80 BGN
+    Takeout                         6,80 BGN
+
+2025/11/7 Water
+    Cash                            -1 BGN
+    Groceries                       1 BGN
+
+2025/11/7 Makao Groceries
+    Food Vouchers                   -20,60 EUR
+    Groceries                       20,60 EUR
+
+2025/11/10 Breakfast
+    Unicredit Card                  -2,60 EUR
+    Takeout                         2,60 EUR
+
+2025/11/10 Lunch
+    Food Vouchers                   -3,96 EUR
+    Takeout                         3,96 EUR
+
+2025/11/10 Semester Control Test Lists
+    Cash                            -2,50 BGN
+    University                      2,50 BGN
+
+2025/11/11 Breakfast
+    Unicredit Card                  -2,66 EUR
+    Takeout                         2,66 EUR
+
+2025/11/11 Spotify Subscription
+    Unicredit Card                  -9,97 EUR
+    Spotify                         9,97 EUR
+
+2025/11/11 Lunch
+    Food Vouchers                   -4,36 EUR
+    Takeout                         4,36 EUR
+
+2025/11/11 Discord Subscription
+    Unicredit Card                  -9,99 EUR
+    Discord                         9,99 EUR
+
+2025/11/12 Breakfast
+    Unicredit Card                  -2,60 EUR
+    Takeout                         2,60 EUR
+
+2025/11/12 Wise -> JPY
+    Wise                            -60 EUR
+    Wise Fees                       0,27 EUR
+    Wise                            10696 JPY ((1/179,065 EUR))
+
+2025/11/12 Lunch
+    Cash                            -10,30 BGN
+    Takeout                         10,30 BGN
+
+2025/11/12 Unicredit EUR -> Wise
+    Unicredit Card                  -148,89 EUR
+    Wise                            147,69 EUR
+    Wise Fees                       1,20 EUR
+
+2025/11/12 Wise -> Wise
+    Wise                            -130,83 EUR
+    Wise                            151,70 USD ((1/1,1595 EUR))
+
+2025/11/12 Mococo Jacket - Ender gift
+    Wise                            -151,70 USD
+    Gifts                           151,70 USD
+
+2025/11/12 Apartment taxes
+    Cash                            -20 BGN
+    Apartment Taxes                 20 BGN
+
+2025/11/13 Breakfast
+    Cash                            -6,50 BGN
+    Takeout                         6,50 BGN
+
+2025/11/13 Lunch
+    Cash                            -10,90 BGN
+    Takeout                         10,90 BGN
+
+2025/11/14 Breakfast
+    Unicredit Card                  -2,60 EUR
+    Takeout                         2,60 EUR
+
+2025/11/14 Lunch
+    Food Vouchers                   -4,09 EUR
+    Takeout                         4,09 EUR
+
+2025/11/14 Groceries
+    Food Vouchers                   -19,73 EUR
+    Groceries                       19,73 EUR
+
+2025/11/15 Breakfast
+    Unicredit Card                  -1,43 EUR
+    Takeout                         1,43 EUR
+
+2025/11/15 Groceries
+    Food Vouchers                   -11,61 EUR
+    Groceries                       11,61 EUR
+
+2025/11/17 Breakfast
+    Unicredit Card                  -2,60 EUR
+    Takeout                         2,60 EUR
+
+2025/11/17 Lunch
+    Unicredit Card                  -5,06 EUR
+    Takeout                         5,06 EUR
+
+2025/11/17 Going out with friends
+    Cash                            -31,5 BGN
+    Takeout                         31,5 BGN
+
+2025/11/18 Lunch
+    Unicredit Card                  -4,42 EUR
+    Takeout                         4,42 EUR
+
+2025/11/19 Ash Game Money Recieved
+    AshGame                         -55,85 GBP
+    Wise                            55,85 GBP
+
+2025/11/19 AshGame Blue Payout
+    Wise                            -5,59 GBP
+    Wise Fees                       0,02 GBP
+    Wise                            6,32 EUR ((1/1,1342 GBP))
+
+2025/11/19 AshGame Ender Payout
+    Wise                            -25,13 GBP
+    Wise Fees                       1,09 GBP
+    Ender                           24,04 GBP
+
+2025/11/19 AshGame Ash Payout
+    Wise                            -25,13 GBP
+    Ash                             25,13 GBP
+
+2025/11/19 Lunch
+    Cash                            -10 BGN
+    Takeout                         10 BGN
+
+2025/11/20 Lunch
+    Unicredit Card                  -5,13 EUR
+    Takeout                         5,13 EUR
+
+2025/11/20 Dinner
+    Unicredit Card                  -14,54 EUR
+    Takeout                         14,54 EUR
+
+2025/11/21 Lunch
+    Cash                            -20 BGN
+    Takeout                         20 BGN
+
+2025/11/21 Izumi-papa Fanbox
+    Wise                            -300 JPY
+    Fanbox                          300 JPY
+
+2025/11/22 Valentin Lent Money
+    Unicredit Card                  -25,56 EUR
+    Valentin                        25,56 EUR
+
+2025/11/22 Jay Shipping
+    Cash                            -26,05 BGN
+    Jay                             26,05 BGN
+
+2025/11/22 Going out
+    Cash                            -7 BGN
+    Takeout                         7 BGN
+
+2025/11/23 Father Money
+    Father Inc                      -200 BGN
+    Cash                            200 BGN
+
+2025/11/23 Grandma Money
+    Grandma Inc                     -100 BGN
+    Cash                            100 BGN
+
+2025/11/23 Ender Rent
+    Ender Inc                       -200 BGN
+    Cash                            145 BGN
+    Unicredit Card                  28,12 EUR
+
+2025/11/24 Lunch
+    Unicredit Card                  -5,31 EUR
+    Takeout                         5,31 EUR
+
+2025/11/24 Groceries
+    Unicredit Card                  -11,42 EUR
+    Groceries                       11,42 EUR
+
+2025/11/25 Goose Membership
+    Unicredit Card                  -1,02 EUR
+    Youtube Membership              1,02 EUR
+
+2025/11/25 Unicredit tax
+    Unicredit Card                  -9,65 EUR
+    Unicredit Fees                  9,65 EUR
+
+2025/11/25 Lunch
+    Unicredit Card                  -6,64 EUR
+    Takeout                         6,64 EUR
+
+2025/11/27 Lunch
+    Unicredit Card                  -4,94 EUR
+    Takeout                         4,94 EUR
+
+2025/11/27 Wise Conversion
+    Wise                            -59,64 EUR
+    Wise Fees                       0,27 EUR
+    Wise                            10760 JPY ((1/181,235 EUR))
+
+2025/11/27 Zenmarket
+    Wise                            -18000 JPY
+    Zenmarket                       18000 JPY
+
+2025/11/27 Unicredit Bank Fees
+    Unicredit Card                  -1,02 EUR
+    Unicredit Fees                  1,02 EUR
+
+2025/11/28 Lunch
+    Cash                            -10,30 BGN
+    Takeout                         10,30 BGN
+
+2025/11/28 Fubuki Membership
+    Unicredit Card                  -2,55 EUR
+    Youtube Membership              2,55 EUR
+
+2025/11/28 Jay return
+    Jay                             -8800 JPY ((1/92,5791 BGN))
+    Jay                             -26,05 BGN
+    Wise                            122,55 BGN
+
+2025/11/28 Wise BGN -> EUR
+    Wise                            -122,55 BGN
+    Wise Fees                       0,71 BGN
+    Wise                            62,30 EUR
+
+2025/11/29 DSK Fees
+    DSK Personal                    -1,02 EUR
+    Father Exp                      -1,53 EUR
+    DSK Fees                        2,55 EUR
+
+2025/11/29 DSK Fees
+    DSK Personal                    -1,39 EUR
+    DSK Fees                        1,39 EUR
+
+2025/12/1 Paycheck
+    SSV Inc                         -824,86 EUR
+    Food Vouchers                   102,26 EUR
+    Unicredit Card                  722,60 EUR
+
+2025/12/1 Lunch
+    Food Vouchers                   -5,80 EUR
+    Takeout                         5,80 EUR
+
+2025/12/1 Mio Membership
+    Unicredit Card                  -2,55 EUR
+    Youtube Membership              2,55 EUR
+
+2025/12/1 Earendel Patreon
+    Unicredit Card                  -1,80 EUR
+    Patreon                         1,80 EUR
+
+2025/12/1 DSK Transfer
+    Unicredit Card                  -393,69 EUR
+    DSK Personal                    189,17 EUR
+    Father Exp                      204,52 EUR
+
+2025/12/1 Mobal - JP Phone number
+    Wise                            -900 JPY
+    JP Bills                        900 JPY
+
+2025/12/2 Internet
+    Unicredit Card                  -10,63 EUR
+    Bills                           10,63 EUR
+
+2025/12/2 Lunch
+    Food Vouchers                   -4,65 EUR
+    Takeout                         4,65 EUR
+
+2025/12/3 Fanbox Support
+    Wise                            -2500 JPY
+    Fanbox                          2500 JPY
+
+2025/12/3 Wise Cashback
+    Wise Cashback                   -0,07 EUR
+    Wise                            0,07 EUR
+
+2025/12/3 University Scholarship
+    Scholarship TU                  -552,19 EUR
+    Unicredit Card                  552,19 EUR
+
+2025/12/3 Lunch
+    Food Vouchers                   -4,40 EUR
+    Takeout                         4,40 EUR
+
+2025/12/4 Lunch
+    Food Vouchers                   -3,31 EUR
+    Takeout                         3,31 EUR
+
+2025/12/5 Lunch
+    Cash                            -11,40 BGN
+    Takeout                         11,40 BGN
+
+2025/12/5 Loan payment
+    DSK Personal                    -169,75 EUR
+    DSK Fees                        12,66 EUR
+    DSK Loan                        157,09 EUR
+
+2025/12/7 Spotify Subscription
+    Unicredit Card                  -9,97 EUR
+    Spotify                         9,97 EUR
+
+2025/12/7 Wise Transfer
+    Unicredit Card                  -400,55 EUR
+    Unicredit Fees                  0,55 EUR
+    Wise                            400 EUR
+
+
+2025/12/7 Maxim NAS Payment
+    Wise                            -70 EUR
+    Equipment                       70 EUR
+
+2025/12/7 Mom bill payment
+    Mother Inc                         -50 BGN
+    Cash                            50 BGN
+
+2025/12/7 Ender bill payment
+    Ender Inc                       -50 BGN
+    Cash                            50 BGN
+
+2025/12/7 Bill payment
+    Cash                            -50 BGN
+    Bills                           50 BGN
+
+2025/12/8 Wise -> JPY
+    Wise                            -82,37 EUR
+    Wise Fees                       0,38 EUR
+    Wise                            14863 JPY ((1/181,275 EUR))
+
+2025/12/8 MioKamihappi purchase
+    Wise                            -14883 JPY
+    Wise Fees                       109 JPY
+    Fanmade                         7332 JPY
+    GeroniBro                       46,94 EUR
+
+2025/12/8 Lunch
+    Food Vouchers                   -2,18 EUR
+    Takeout                         2,18 EUR
+
+2025/12/9 Lunch
+    Food Vouchers                   -4,92 EUR
+    Takeout                         4,92 EUR
+
+2025/12/9 Game bundle
+    Unicredit Card                  -40,18 EUR
+    Games                           40,18 EUR
+
+2025/12/10 Lunch
+    Cash                            -5 BGN
+    Takeout                         5 BGN
+
+2025/12/10 Water for the office
+    Cash                            -10,80 BGN
+    Groceries                       10,80 BGN
+
+2025/12/10 NAS Ram upgrade
+    Wise                            -44,90 EUR
+    Equipment                       44,90 EUR
+
+2025/12/11 Ash Game inc
+    AshGame                         -78,68 GBP
+    Wise                            78,68 GBP
+
+2025/12/11 Ash Game Payout
+    Wise                            -78,68 GBP
+    Wise Fees                       1,13 GBP
+    Wise                            8,98 EUR ((1/1,1436 GBP))
+    Ender                           34,29 GBP
+    Ash                             35,41 GBP
+
+2025/12/11 Discord
+    Unicredit Card                  -10,01 EUR
+    Discord                         10,01 EUR
+
+2025/12/11 Lunch
+    Food Vouchers                   -6,74 EUR
+    Takeout                         6,74 EUR
+
+2025/12/12 Breakfast
+    Cash                            -2,40 BGN
+    Takeout                         2,40 BGN
+
+2025/12/12 Blackship shipping out MioMerch
+    Unicredit Card                  -65,87 EUR
+    Blackship                       65,87 EUR
+
+2025/12/12 Lunch
+    Cash                            -10,80 BGN
+    Takeout                         10,80 BGN
+
+2025/12/14 Cake time
+    Food Vouchers                   -11,88 EUR
+    Takeout                         11,88 EUR
+
+2025/12/15 Lunch
+    Food Vouchers                   -4,99 EUR
+    Takeout                         4,99 EUR
+
+2025/12/16 Lunch
+    Food Vouchers                   -6,09 EUR
+    Takeout                         6,09 EUR
+
+2025/12/16 Wise -> JPY
+    Wise                            -200 EUR
+    Wise Fees                       0,92 EUR
+    Wise                            36198 JPY ((1/181,825 EUR))
+
+2025/12/17 Lunch
+    Cash                            -9,50 BGN
+    Takeout                         9,50 BGN
+
+
+2025/12/17 Valentin Payback
+    Valentin                        -25,56 EUR
+    Unicredit Card                  25,56 EUR
+
+2025/12/18 Ender Stage 2 tickets
+    Ender Debt                      -139,22 EUR
+    Events                          24472 JPY ((1/175,78 EUR))
+
+2025/12/18 Stage 4 Tickets - 7th Fes
+    Wise                            -24472 JPY
+    Events                          24472 JPY
+
+2025/12/18 Day 2 - Expo 2026
+    Wise                            -15408 JPY
+    Events                          15408 JPY
+
+2025/12/18 Lunch
+    Food Vouchers                   -4,57 EUR
+    Takeout                         4,57 EUR
+
+2025/12/19 National ID Recreation
+    Unicredit Card                  -9,20 EUR
+    Bills                           9,20 EUR
+
+2025/12/21 Sponsor JP Resource Website
+    Unicredit Card                  -4,27 EUR
+    Donations                       4,27 EUR
+
+2025/12/21 Dinner
+    Food Vouchers                   -9,63 EUR
+    Takeout                         9,63 EUR
+
+2025/12/22 Breakfast
+    Cash                            -5 BGN
+    Takeout                         5 BGN
+
+2025/12/22 Earplugs
+    Unicredit Card                  -80,06 EUR
+    Equipment                       80,06 EUR
+
+2025/12/23 Breakfast
+    Cash                            -5,10 BGN
+    Takeout                         5,10 BGN
+
+2025/12/23 Lunch
+    Food Vouchers                   -1,70 EUR
+    Takeout                         1,70 EUR
+
+2025/12/23 Paycheck
+    SSV Inc                         -785,19 EUR
+    DSK Personal                    682,93 EUR
+    Food Vouchers                   102,26 EUR
+
+2025/12/23 Ender Rent and Bills for January
+    Ender Inc                       -250 BGN
+    Cash                            250 BGN
+
+2025/12/23 Internet + Phone
+    Unicredit Card                  -25,35 EUR
+    Bills                           25,35 EUR
+
+2025/12/23 Ender Rent Bank Transfer
+    DSK Personal                    -107,37 EUR
+    Father Exp                      107,37 EUR
+
+2025/12/23 Mom Bills pay
+    Mother Inc                      -50 BGN
+    Cash                            50 BGN
+
+2025/12/25 Christmass Presents
+    Mother Inc                      -50 BGN
+    Grandma Inc                     -100 BGN
+    Cash                            150 BGN
+
+2025/12/25 Father February Denitsa
+    Father Inc                      -210 BGN
+    Cash                            210 BGN
+
+2025/12/25 Ender Takeout
+    Food Vouchers                   -7,12 EUR
+    Takeout                         7,12 EUR
+
+2025/12/27 Wise -> JPY
+    Wise                            -164,08 EUR
+    Wise Fees                       0,75 EUR
+    Wise                            30102 JPY ((1/184,3 EUR))
+
+2025/12/25 Zenmarket merch
+    Wise                            -13200 JPY
+    Zenmarket                       13200 JPY
+
+2025/12/27 Groceries
+    Food Vouchers                   -14,41 EUR
+    Groceries                       14,41 EUR
+
+2025/12/29 Cash -> Unicredit Card
+    Cash                            -1000 BGN ((1/1,95583 EUR))
+    Unicredit Card                  511,29 EUR
+
+2025/12/29 DSK -> Unicredit Card
+    DSK Personal                    -307,14 EUR
+    DSK Fees                        0,36 EUR
+    Unicredit Card                  306,78 EUR
+
+2025/12/29 DSK Warranty Fees
+    DSK Personal                    -1,39 EUR
+    DSK Fees                        1,39 EUR
+
+2025/12/29 Goose Membership
+    Unicredit Card                  -1 EUR
+    Youtube Membership              1 EUR
+
+2025/12/29  Fubuki Membership
+    Unicredit Card                  -2,49 EUR
+    Youtube Membership              2,49 EUR
+
+2025/12/29 Unicredit Fees
+    Unicredit Card                  -1,02 EUR
+    Unicredit Fees                  1,02 EUR
+
+2025/12/29 Breakfast
+    Unicredit Card                  -1,43 EUR
+    Takeout                         1,43 EUR
+
+2025/12/29 DSK Personal -> Father
+    DSK Personal                    -102,26 EUR
+    Father Exp                      102,26 EUR
+
+2025/12/30 Groceries - New Year Prep
+    Food Vouchers                   -9,38 EUR
+    Groceries                       9,38 EUR
+
+2025/12/30 Unicredit Fees
+    Unicredit Card                  -9,65 EUR
+    Unicredit Fees                  9,65 EUR
+
+2025/12/31 Holoearth holocoins
+    Wise                            -2800 JPY
+    Holoearth                       2800 JPY
+
+2025/12/31 Holoearth holocoins p2
+    Wise                            -1500 JPY
+    Holoearth                       1500 JPY
+
+2025/12/31 DSK Fees
+    Father Exp                      -1,53 EUR
+    DSK Personal                    -1,02 EUR
+    DSK Fees                        2,55 EUR
+
+2026/1/1 DSK BGN->EUR Official
+    DSK Fees                        -0,04 EUR
+    Father Exp                      0,01 EUR
+    DSK Personal                    0,03 EUR
+
+2026/1/1 Unicredit BGN->EUR Official
+    Unicredit Fees                  0
+    Unicredit Card                  0
+
+2025/1/1 Mio Membership
+    Unicredit Card                  -2,49 EUR
+    Youtube Membership              2,49 EUR
+
+2026/1/1 Earendel Patreon
+    Unicredit Card                  -1,80 EUR
+    Patreon                         1,80 EUR
+
+2026/1/1 Mobal JP Phone
+    Wise                            -900 JPY
+    JP Bills                        900 JPY
+
+2026/1/2 Brother Shenanigans
+    Cash                            -5 BGN
+    Cash                            3,44 EUR
+
+2026/1/3 Pixiv Fanbox
+    Wise                            -2500 JPY
+    Fanbox                          2500 JPY
+
+2026/1/4 Lunch
+    Food Vouchers                   -8,26 EUR
+    Takeout                         8,26 EUR
+
+2026/1/5 Breakfast
+    Cash                            -1,43 EUR
+    Takeout                         1,43 EUR
+
+2026/1/5 Lunch
+    Food Vouchers                   -4,32 EUR
+    Takeout                         4,32 EUR
+
+2026/1/5 DSK Debt Payoff
+    DSK Personal                    -157,09 EUR
+    DSK Loan                        157,09 EUR
+
+2026/1/5 DSk Fees Loan
+    DSK Personal                    -12,66 EUR
+    DSK Fees                        12,66 EUR
+
+2026/1/6 Ash Game Payout
+    AshGame                         -184,64 EUR
+    Wise                            18,46 EUR
+    Ender                           83,09 EUR
+    Ash                             83,09 EUR
+
+2026/1/6 Lunch
+    Food Vouchers                   -3,85 EUR
+    Takeout                         3,85 EUR
+
+2026/1/6 Groceries
+    Food Vouchers                   -4,51 EUR
+    Groceries                       4,51 EUR
+
+2026/1/6 Apartment Bills
+    Cash                            -60 BGN
+    Cash                            -2 EUR
+    Bills                           60 BGN
+    Bills                           2 EUR
+
+2026/1/7 Wise Cashback
+    Wise Cashback                   -0,09 EUR
+    Wise                            0,09 EUR
+
+2026/1/7 Spotify Subscription
+    Unicredit Card                  -9,97 EUR
+    Spotify                         9,97 EUR
+
+2026/1/7 Breakfast
+    Cash                            -5 BGN
+    Takeout                         5 BGN
+
+2026/1/7 Lunch
+    Cash                            -5 BGN ((1/1,95583 EUR))
+    Cash                            0,29 EUR
+    Takeout                         2,04 EUR
+
+2026/1/7 Ender Debt Payoff
+    Ender Debt                      -500 EUR
+    Unicredit Card                  500 EUR
+
+2026/1/8 Lunch
+    Food Vouchers                   -5,77 EUR
+    Takeout                         5,77 EUR
+
+2026/1/8 Flight ticket SOF -> HND -> SOF 2026/03/02 -> 2026/03/10
+    Unicredit Card                  -1105,41 EUR
+    Flight                          1105,41 EUR
+
+2026/1/9 Unicredit -> Wise
+    Unicredit Card                  -200 EUR
+    Wise                            200 EUR
+
+2026/1/9 Wise -> JPY
+    Wise                            -218,55 EUR
+    Wise Fees                       1 EUR
+    Wise                            39889 JPY ((1/183,355 EUR))
+
+2026/1/9 Mio 7th Ani Merch
+    Wise                            -27620 JPY
+    Hololive                        27620 JPY
+
+2026/1/9 Lunch
+    Unicredit Card                  -3,52 EUR
+    Takeout                         3,52 EUR
+
+2026/1/9 Ender Dinner
+    Food Vouchers                   -8,88 EUR
+    Takeout                         8,88 EUR
+
+2026/1/11 Cloudflare domain
+    Unicredit Card                  -9 EUR
+    Cloudflare                      9 EUR
+
+2026/1/11 Discord
+    Unicredit Card                  -9,99 EUR
+    Discord                         9,99 EUR
+
+2026/1/12 Breakfast
+    Unicredit Card                  -2,61 EUR
+    Takeout                         2,61 EUR
+
+2026/1/12 Unicredit -> Wise
+    Unicredit Card                  -200 EUR
+    Wise                            200 EUR
+
+2026/1/12 Lunch
+    Cash                            -6,40 BGN
+    Takeout                         6,40 BGN
+
+2026/1/13 Breakfast
+    Unicredit Card                  -1,43 EUR
+    Takeout                         1,43 EUR
+
+2026/1/14 Lunch
+    Food Vouchers                   -8,08 EUR
+    Takeout                         8,08 EUR
+
+2026/1/15 Lunch
+    Cash                            -12,80 BGN
+    Takeout                         12,80 BGN
+
+2026/1/15 Wise -> Wise
+    Wise                            -50 EUR
+    Wise Fees                       0,22 EUR
+    Wise                            9179 JPY ((1/184,395 EUR))
+
+2026/1/15 Holoshop Fes Merch Coming mid Feb
+    Wise                            -25720 JPY
+    Hololive                        25720 JPY
+
+2026/1/15 Holoshop Expo Merch Coming mid Feb
+    Wise                            -5260 JPY
+    Hololive                        5260 JPY
+
+2026/1/15 Wise -> Unicredit
+    Wise                            -75 EUR
+    Unicredit Card                  75 EUR
+
+2026/1/16 Withdraw Unicredit
+    Unicredit Card                  -50 EUR
+    Cash                            50 EUR
+
+2026/1/16 Can Badges from Huzz
+    Wise                            -800 JPY
+    SecondHand                      800 JPY
+
+2026/1/16 Groceries for Mio dry curry
+    Food Vouchers                   -22,82 EUR
+    Groceries                       22,82 EUR
+
+2026/1/17 Customs for package
+    Cash                            -34,81 EUR
+    Customs                         34,81 EUR
+
+2026/1/17 Breakfast
+     Unicredit Card                 -1,28 EUR
+     Takeout                        1,28 EUR
+
+2026/1/19 Lunch
+    Cash                            -10 BGN
+    Takeout                         10 BGN
+
+2026/1/19 Wise -> JPY
+    Wise                            -75 EUR
+    Wise Fees                       0,35 EUR
+    Wise                            13745 JPY ((1/184,125 EUR))
+
+2026/1/19 Extra Fanboxes
+    Wise                            -1900 JPY
+    Fanbox                          1900 JPY
+
+2026/1/20 Lunch
+    Unicredit Card                  -5 EUR
+    Takeout                         5 EUR
+
+2026/1/20 Groceries
+    Food Vouchers                   -15,52 EUR
+    Groceries                       15,52 EUR
+
+2026/1/20 Zenmarket
+    Wise                            -6768 JPY
+    Zenmarket                       6768 JPY
+
+2026/1/21 Github Sponsorship SethClydesdale
+    Unicredit Card                  -4,30 EUR
+    Donations                       4,30 EUR
+
+2026/1/22 Ender FWMC FWU
+    Wise                            -8480 JPY
+    Hololive                        8480 JPY
+
+2026/1/22 Ender gave money
+    Ender Inc                       -46,93 EUR
+    Wise                            46,93 EUR
+
+2026/1/22 Wise -> Wise
+    Wise                            -46,93 EUR
+    Wise Fees                       0,21 EUR
+    Wise                            8668 JPY ((1/185,505 EUR))
+
+2026/1/22 Scholarship got
+    Scholarship TU                  -184,06 EUR
+    Unicredit Card                  184,06 EUR
+
+2026/1/23 Lunch
+    Cash                            -6,94 EUR
+    Takeout                         6,94 EUR
+
+2026/1/25 Endfield Event Pass
+    Unicredit Card                  -9,99 EUR
+    Endfield                        9,99 EUR
+
+2026/1/25 Goose Membership
+    Unicredit Card                  -0,99 EUR
+    Youtube Membership              0,99 EUR
+
+2026/1/26 Breakfast
+    Unicredit Card                  -1,38 EUR
+    Takeout                         1,38 EUR
+
+2026/1/26 Unicredit Fees
+    Unicredit Card                  -9,65 EUR
+    Unicredit Fees                  9,65 EUR
+
+2026/1/27 Unicredit Fees Protection
+    Unicredit Card                  -1,02 EUR
+    Unicredit Fees                  1,02 EUR
+
+2026/1/27 Lunch
+    Cash                            -3,98 EUR
+    Takeout                         3,98 EUR
+
+2026/1/27 Ender Rent + Bills
+    Ender Inc                       -125 EUR
+    Unicredit Card                  125 EUR
+
+2026/1/27 Dinner
+    Food Vouchers                   -13,62 EUR
+    Takeout                         13,62 EUR
+
+2026/1/28 Lunch
+    Cash                            -9 BGN
+    Takeout                         9 BGN
+
+2026/1/28 Fubuki Membership
+    Unicredit Card                  -2,49 EUR
+    Youtube Membership              2,49 EUR
+
+2026/1/29 Lunch
+    Cash                            -13 BGN
+    Takeout                         13 BGN
+
+2026/1/30 DSK Fees
+    DSK Personal                    -2,41 EUR
+    Father Exp                      -1,53 EUR
+    DSK Fees                        3,94 EUR
+
+2026/1/31 BGN Removed
+    Cash                            -20,95 BGN
+    Void                            19 BGN
+    Cash                            1 EUR ((1,95 BGN))
+
+2026/1/31 Ingedients for curry
+    Unicredit Card                  -22,22 EUR
+    Groceries                       22,22 EUR
+
+2026/1/31 Endfield month pass
+    Unicredit Card                  -4,99 EUR
+    Endfield                        4,99 EUR
+
+2026/2/1 Food Vouchers Given
+    SSV Inc                         -102,26 EUR
+    Food Vouchers                   102,26 EUR
+
+2026/2/1 Laundry Detergent pods + some groceries
+    Food Vouchers                   -20,45 EUR
+    Groceries                       20,45 EUR
+
+2026/2/1 Mobal Phone Sim
+    Wise                            -900 JPY
+    JP Bills                        900 JPY
+
+2026/2/1 Mio Memberchip
+    Unicredit Card                  -2,49 EUR
+    Youtube Membership              2,49 EUR
+
+2026/2/1 Earendel Patreon
+    Unicredit Card                  -1,80 EUR
+    Patreon                         1,80 EUR
+
+2026/2/2 Breakfast
+    Unicredit Card                  -2,66 EUR
+    Takeout                         2,66 EUR
+
+2026/2/2 Lunch
+    Food Vouchers                   -3,45 EUR
+    Takeout                         3,45 EUR
+
+2026/2/2 MOAR CURRY
+    Food Vouchers                   -23,10 EUR
+    Groceries                       23,10 EUR
+
+2026/2/2 Drink Choco
+    Cash                            -0,5 EUR
+    Takeout                         0,5 EUR
+
+2026/2/3 Pixiv support
+    Wise                            -4400 JPY
+    Fanbox                          4400 JPY
+
+2026/2/3 Fanbox Kajimakoto
+    Wise                            -500 JPY
+    Fanbox                          500 JPY
+
+2026/2/3 Fanbox Atahuta
+    Wise                            -300 JPY
+    Fanbox                          300 JPY
+
+2026/2/3 Fanbox circumcision
+    Wise                            -500 JPY
+    Fanbox                          500 JPY
+
+2026/2/3 Fanbox kanami
+    Wise                            -500 JPY
+    Fanbox                          500 JPY
+
+2026/2/3 Lunch
+    Cash                            -4,20 EUR
+    Takeout                         4,20 EUR
+
+2026/2/3 Internet and Phone Bill
+    Unicredit Card                  -16,76 EUR
+    Bills                           16,76 EUR
+
+2026/2/3 Unicredit -> DSK
+    Unicredit Card                  -140 EUR
+    DSK Personal                    140 EUR
+
+2026/2/4 Valentin Loan
+    Unicredit Card                  -20 EUR
+    Valentin                        20 EUR
+
+2026/2/4 Unicredit -> DSK
+    Unicredit Card                  -105 EUR
+    DSK Personal                    105 EUR
+
+2026/2/4 DSK Personal -> Father
+    DSK Personal                    -100 EUR
+    Father Exp                      100 EUR
+
+2026/2/4 Paycheck
+    SSV Inc                         -936,63 EUR
+    DSK Personal                    936,63 EUR
+
+2026/2/4 DSK -> Unicredit
+    DSK Personal                    -936,36 EUR
+    DSK Fees                        0,36 EUR
+    Unicredit Card                  936 EUR
+
+2026/2/4 Orthodentist periodic payment
+    Unicredit Card                  -102,26 EUR
+    Orthodentist                    102,26 EUR
+
+2026/2/5 Unicredit -> Wise
+    Unicredit Card                  -600 EUR
+    Wise                            600 EUR
+
+2026/2/5 Unicredit -> DSK
+    Unicredit Card                  -20 EUR
+    Father Exp                      10 EUR
+    DSK Personal                    10 EUR
+
+2026/2/5 DSK Loan
+    DSK Personal                    -157,09 EUR
+    DSK Loan                        157,09 EUR
+
+2026/2/5 DSK Loan fees
+    DSK Personal                    -12,66 EUR
+    DSK Fees                        12,66 EUR
+
+2026/2/7 Spotify
+    Unicredit Card                  -9,97 EUR
+    Spotify                         9,97 EUR
+
+2026/2/9 Withdraw
+    Unicredit Card                  -100,77 EUR
+    Unicredit Fees                  0,77 EUR
+    Cash                            100 EUR
+
+2026/2/9 Money Rent Got
+    Mother Inc                      -50 EUR
+    Cash                            50 EUR
+
+2026/2/10 Dad Rent Money Extra
+    Unicredit Card                  -25 EUR
+    Father Exp                      25 EUR
+
+2026/2/10 Lunch
+    Cash                            -4,30 EUR
+    Takeout                         4,30 EUR
+
+2026/2/10 Grandma Money!
+    Grandma Inc                     -20 EUR
+    Cash                            20 EUR
+
+2026/2/10 Wise -> JPY
+    Wise                            -50 EUR
+    Wise Fees                       0,22 EUR
+    Wise                            9139 JPY ((1/183,585 EUR))
+
+2026/2/10 Ender Debt Payoff
+    Ender Debt                      -200 EUR
+    Wise                            200 EUR
+
+2026/2/11 Lunch
+    Cash                            -4,10 EUR
+    Takeout                         4,10 EUR
+
+2026/2/11 Wise -> USD
+    Wise                            -100 EUR
+    Wise Fees                       0,46 EUR
+    Wise                            118,06 USD ((1/1,1861 EUR))
+
+2026/2/11 Blackship Subscription
+    Wise                            -12 USD
+    Blackship                       12 USD
+
+2026/2/12 Lunch
+    Cash                            -4,80 EUR
+    Takeout                         4,80 EUR
+
+2026/2/12 Dinner Burger
+    Food Vouchers                   -7,15 EUR
+    Takeout                         7,15 EUR
+
+2026/2/13 Lunch
+    Cash                            -4,70 EUR
+    Takeout                         4,70 EUR
+
+2026/2/13 Bills
+    Cash                            -53 EUR
+    Bills                           53 EUR
+
+2026/2/13 Endfield Monthly Pass
+    Wise                            -610 JPY
+    Endfield                        610 JPY
+
+2026/2/14 Lunch
+    Cash                            -3 EUR
+    Takeout                         3 EUR
+
+2026/2/15 Lunch
+    Cash                            -3,20 EUR
+    Takeout                         3,20 EUR
+
+2026/2/16 Breakfast
+    Cash                            -3 EUR
+    Takeout                         3 EUR
+
+2026/2/16 Dinner
+    Food Vouchers                   -9,98 EUR
+    Takeout                         9,98 EUR
+
+2026/2/17 Apartment Bills
+    Cash                            -60 EUR
+    Apartment Taxes                 60 EUR
+
+2026/2/17 Lunch
+    Food Vouchers                   -5,39 EUR
+    Takeout                         5,39 EUR
+
+2026/2/18 Lunch
+    Food Vouchers                   -3,54 EUR
+    Takeout                         3,54 EUR
+
+2026/2/18 Groceries
+    Food Vouchers                   -8,51 EUR
+    Groceries                       8,51 EUR
+
+2026/2/19 Lunch
+    Food Vouchers                   -2,93 EUR
+    Takeout                         2,93 EUR
+
+2026/2/19 Expo Day 1 Pickup Goods
+    Wise                            -5830 JPY
+    Ender Debt                      2915 JPY
+    Hololive                        2915 JPY
+
+2026/2/20 Breakfast
+    Cash                            -2,80 EUR
+    Takeout                         2,80 EUR
+
+2026/2/20 Lunch
+    Cash                            -10 EUR
+    Takeout                         10 EUR
+
+2026/2/20 Wise -> JPY
+    Wise                            -150 EUR
+    Wise Fees                       0,68 EUR
+    Wise                            27290 JPY ((1/182,769 EUR))
+
+2026/2/20 Expo Day 2 Lunch
+    Wise                            -4130 JPY
+    Takeout                         4130 JPY
+
+2026/2/20 Expo Day 3 Lunch
+    Wise                            -4130 JPY
+    Takeout                         4130 JPY
+
+2026/2/20 Dinner
+    Cash                            -2,50 EUR
+    Takeout                         2,50 EUR
+
+2026/2/21 Cash Void
+    Cash                            -15,29 EUR
+    Void                            15,29 EUR
+
+2026/2/21 Sukonbu Offkai Prepayment
+    Wise                            -5198 JPY
+    Meetups                         5198 JPY
+
+2026/2/21 GeroniBro Happi Shipping
+    Wise                            -33,76 USD
+    GeroniBro                       33,76 USD
+
+2026/2/21 Donation SethClydesdale
+    Unicredit Card                  -4,26 EUR
+    Donations                       4,26 EUR
+
+2026/2/22 Lunch
+    Food Vouchers                   -4,46 EUR
+    Takeout                         4,46 EUR
+
+2026/2/22 Wise -> JPY
+    Wise                            -500 EUR
+    Wise Fees                       2,29 EUR
+    Wise                            90934 JPY ((1/182,705 EUR))
+
+2026/2/22 Hotel Japan Trip 7 nights
+    Wise                            -83931 JPY
+    Hotel                           83931 JPY
+
+2026/2/22 Bus Ticket to Sofia
+    Unicredit Card                  -18 EUR
+    Bus                             18 EUR
+
+2026/2/23 Father Cash Money
+    Father Inc                      -110 EUR
+    Cash                            110 EUR ; 100 EUR to him, 10 to me
+
+2026/2/23 Breakfast
+    Unicredit Card                  -3,10 EUR
+    Takeout                         3,10 EUR
+
+2026/2/23 Lunch
+    Unicredit Card                  -3,52 EUR
+    Takeout                         3,52 EUR
+
+2026/2/23 Limbus Company Exhibition
+    Wise                            -2110 JPY
+    Events                          2110 JPY
+
+2026/2/23 Tobi Gift
+    Friends Inc                     -40 EUR
+    Wise Savings                    40 EUR
+
+2026/2/24 Breakfast
+    Unicredit Card                  -1,60 EUR
+    Takeout                         1,60 EUR
+
+2026/2/24 Ash Payout
+    AshGame                         -108,38 EUR
+    Wise Investment                 10,84 EUR
+    Ash                             97,54 EUR
+
+2026/2/24 Endfield Arsenal Pass
+    Wise                            -2000 JPY
+    Endfield                        2000 JPY
+
+2026/2/25 Unicredit Fees
+    Unicredit Card                  -9,65 EUR
+    Unicredit Fees                  9,65 EUR
+
+2026/2/25 Goose Membership
+    Unicredit Card                  -0,99 EUR
+    Youtube Membership              0,99 EUR
+
+2026/2/25 University Stipend February
+    Scholarship TU                  -107,37 EUR
+    Unicredit Card                  107,37 EUR
+
+2026/2/25 University Stipend February Priority
+    Scholarship TU                  -76,69 EUR
+    Unicredit Card                  76,69 EUR
+
+2026/2/25 Internet + Phone Bill
+    Unicredit Card                  -22,90 EUR
+    Bills                           22,90 EUR
+
+2026/2/25 Lunch
+    Food Vouchers                   -4,09 EUR
+    Takeout                         4,09 EUR
+
+2026/2/25 Dinner
+    Food Vouchers                   -9 EUR
+    Takeout                         9 EUR
+
+2026/2/26 Father Money
+    Unicredit Card                  -100 EUR
+    Father Exp                      100 EUR
+
+2026/2/26 Martenitsi Bought
+    Cash                            -6,50 EUR
+    Gifts                           6,50 EUR
+
+2026/2/26 Breakfast
+    Unicredit Card                  -1,60 EUR
+    Takeout                         1,60 EUR
+
+2026/2/26 Lunch
+    Food Vouchers                   -1,32 EUR
+    Takeout                         1,32 EUR
+
+2026/2/26 Blackship shipping BIG Package
+    Wise                            -48,89 USD
+    Blackship                       48,89 USD
+
+2026/2/27 Blackship shipping Mio Birthday goods
+    Wise                            -19 USD
+    Blackship                       19 USD
+
+2026/2/27 Unicredit Safety Fee
+    Unicredit Card                  -1,02 EUR
+    Unicredit Fees                  1,02 EUR
+
+2026/2/27 DSK Fees Personal
+    DSK Personal                    -1,02 EUR
+    DSK Fees                        1,02 EUR
+    DSK Personal                    -1,39 EUR
+    DSK Fees                        1,39 EUR
+
+2026/2/27 DSK Fees Father
+    Father Exp                      -0,36 EUR
+    DSK Fees                        0,36 EUR
+    Father Exp                      -1,53 EUR
+    DSK Fees                        1,53 EUR
+
+2026/2/27 Dinner
+    Food Vouchers                   -6,60 EUR
+    Takeout                         6,60 EUR
+
+2026/2/28 Fubuki Membership
+    Unicredit Card                  -2,49 EUR
+    Youtube Membership              2,49 EUR
+
+2026/3/1 Wise Savings -> JPY
+    Wise Savings                    -40 EUR
+    Wise Fees                       0,18 EUR
+    Wise                            7345 JPY ((1/184,450 EUR))
+
+2026/3/1 Mobal Fee
+    Wise                            -4378 JPY
+    JP Bills                        4378 JPY
+
+2026/3/1 Food Vouchers Pay
+    SSV Inc                         -102,26 EUR
+    Food Vouchers                   102,26 EUR
+
+2026/3/2 Paycheck
+    SSV Inc                         -987,94 EUR
+    Unicredit Card                  987,94 EUR
+
+2026/3/2 Internet fuckup
+    Unicredit Card                  -18,64 EUR
+    Flight                          18,64 EUR
+
+2026/3/2 Unicredit -> Father Exp
+    Unicredit Card                  -102,26 EUR
+    Father Exp                      102,26 EUR
+
+2026/3/2 Unicredit -> DSK Personal
+    Unicredit Card                  -180 EUR
+    DSK Personal                    180 EUR
+
+2026/3/2 Breakfast and lunch for the day
+    Unicredit Card                  -6,30 EUR
+    Takeout                         6,30 EUR
+
+2026/3/3 Cash Exchange EUR  -> JPY
+    Cash                            -70 EUR
+    Cash                            12339 JPY ((1/176,28 EUR))
+
+2026/3/3 Gave coins to holofan lol
+    Cash                            -949 JPY
+    Void                            -51 JPY
+    Cash                            1000 JPY
+
+2026/3/3 Suica Charge
+    Cash                            -10000 JPY
+    Train                           10000 JPY
+
+2026/3/3 Pixiv Fanbox
+    Wise                            -6200 JPY
+    Fanbox                          6200 JPY
+
+2026/3/3 Famili Mart food
+    Wise                            -426 JPY
+    Takeout                         426 JPY
+
+2026/3/3 Tokyo Station Merch
+    Wise                            -7990 JPY
+    Hololive                        7990 JPY
+
+2026/3/3 Fandom Akiba Shin Plushie for Jay
+    Wise                            -2000 JPY
+    Jay                             2000 JPY
+
+2026/3/3 Macdonals fucking hell
+    Wise                            -930 JPY
+    Takeout                         930 JPY
+
+2026/3/3 Mom Bills
+    Mother Inc                      -50 EUR
+    Bills                           50 EUR
+
+2026/3/4 Shadowfoxk lent money yay
+    Holofans Loans                  -10000 JPY
+    Wise                            10000 JPY
+
+2026/3/4 Wise -> Cash
+    Wise                            -10110 JPY
+    ATM Fees                        110 JPY
+    Cash                            10000 JPY
+
+2026/3/4 Masks
+    Wise                            -451 JPY
+    Groceries                       451 JPY
+
+2026/3/4 Naughty fee
+    Cash                            -3000 JPY
+    Events                          3000 JPY
+
+2026/3/4 Patreon Earendel
+    Unicredit Card                  -1,80 EUR
+    Patreon                         1,80 EUR
+
+2026/3/4 Mio Membership
+    Unicredit Card                  -2,49 EUR
+    Youtube Membership              2,49 EUR
+
+2026/3/4 Wise Funds
+    Unicredit Card                  -650 EUR
+    Wise                            650 EUR
+
+2026/3/4 Some more merch and manga
+    Wise                            -4089 JPY
+    Hololive                        4089 JPY
+
+2026/3/4 One piece for Avramov
+    Wise                            -150 JPY
+    Gifts                           150 JPY
+
+2026/3/4 Ender fwmc badges
+    Wise                            -1980 JPY
+    Ender Debt                      1980 JPY
+
+2026/3/4 Wise to Wise
+    Wise                            -400 EUR
+    Wise Fees                       1,83 EUR
+    Wise                            72821 JPY ((1/182,890 EUR))
+
+2026/3/4 Payback Shadowfoxk
+    Wise                            -10000 JPY
+    Holofans Loans                  10000 JPY ; Shadowfoxk
+
+2026/3/4 Withdraw money
+    Wise                            -30284 JPY
+    Wise Fees                       64 JPY
+    ATM Fees                        220 JPY
+    Cash                            30000 JPY
+
+2026/3/4 Water!
+    Wise                            -181 JPY
+    Groceries                       181 JPY
+
+2026/3/4 Lunch
+    Cash                            -1400 JPY
+    Takeout                         1400 JPY
+
+2026/3/4 Rythm games
+    Cash                            -100 JPY
+    Entertainment                   100 JPY
+
+2026/3/4 Holo collab sweet paradice cafe
+    Wise                            -4050 JPY
+    Takeout                         4050 JPY
+
+2026/3/4 Midnight macdonalds
+    Wise                            -950 JPY
+    Takeout                         950 JPY
+
+2026/3/5 Ender Rent
+    Ender Inc                       -102,37 EUR
+    Wise                            102,37 EUR
+
+2026/3/5 Rakuspa event
+    Cash                            -15180 JPY
+    Collabs                         15180 JPY
+
+2026/3/5 Alpha mio merch
+    Cash                            -3200 JPY
+    Fanmade                         3200 JPY
+
+2026/3/5 Hotel at kinugawa sunshine
+    Wise                            -17200 JPY
+    Hotel                           17200 JPY
+
+2026/3/5 Gifts for people
+    Wise                            -2536 JPY
+    Gifts                           2536 JPY
+
+2026/3/5 Wise Cashback
+    Wise Cashback                   -0,16 EUR
+    Wise Cashback                   -0,08 USD
+    Wise                            0,16 EUR
+    Wise                            0,08 USD
+
+2026/3/5 Tobu Ticker Spacia X
+    Wise                            -1650 JPY
+    Train                           1650 JPY
+
+2026/3/5 DSK Loan payoff
+    DSK Personal                    -157,09 EUR
+    DSK Loan                        157,09 EUR
+
+2026/3/5 DSK Loan Fees
+    DSK Personal                    -12,66 EUR
+    DSK Fees                        12,66 EUR
+
+2026/3/6 Hololis offkai
+    Cash                            -4500 JPY
+    Meetups                         4500 JPY
+
+2026/3/6 Something was bought with cash
+    Cash                            -360 JPY
+    Void                            360 JPY
+
+2026/3/6 Water
+    Wise                            -362 JPY
+    Groceries                       362 JPY
+
+2026/3/7 Takeout sweets from seven eleven
+    Wise                            -1087 JPY
+    Takeout                         1087 JPY
+
+2026/3/7 Sukonbu offkai payup
+    Cash                            -500 JPY
+    Meetups                         500 JPY
+
+2026/3/7 Carbonara with Diz
+    Wise                            -1155 JPY
+    Takeout                         1155 JPY
+
+2026/3/8 Something was bought
+    Cash                            -110 JPY
+    Void                            110 JPY
+
+2026/3/8 Miofa Offkai
+    Cash                            -5500 JPY
+    Meetups                         5500 JPY
+
+2026/3/8 Hololis offkai payment due to missing people
+    Cash                            -1000 JPY
+    Meetups                         1000 JPY
+
+2026/3/9 Wise -> JPY
+    Wise                            -102,53 EUR
+    Wise Fees                       0,47 EUR
+    Wise                            18631 JPY ((1/182,545 EUR))
+
+2026/3/9 Animate Ikebukuro Grave Warlax Merch
+    Wise                            -6270 JPY
+    Gifts                           6270 JPY
+
+2026/3/9 GeroniBro payback
+    GeroniBro                       -46,94 EUR
+    GeroniBro                       -33,76 USD ((1/1,198 EUR))
+    Wise                            75,11 EUR
+
+2026/3/9 Wise -> JPY
+    Wise                            -75,11 EUR
+    Wise                            13681 JPY ((1/182,995 EUR))
+
+2026/3/9 Karaoke or msth with Shadow i dunno
+    Wise                            -1000 JPY
+    Entertainment                   1000 JPY
+
+2026/3/9 Tower Records and Tax free cash return
+    Wise                            -21499 JPY
+    Hololive                        19545 JPY
+    Cash                            1954 JPY
+
+2026/3/9 Big Camera Tachikawa Ender
+    Wise                            -1980 JPY
+    Ender Debt                      1980 JPY
+
+2026/3/9 Booksoff Tachikawa Ender
+    Wise                            -1980 JPY
+    Ender Debt                      1980 JPY
+
+2026/3/9 Kotobukiya Tachikawa Ender
+    Wise                            -1100 JPY
+    Ender Debt                      1100 JPY
+
+2026/3/9 Mr Donut baubau
+    Wise                            -1100 JPY
+    Takeout                         1100 JPY
+
+2026/3/9 Ender Debt payment
+    Ender Debt                      -200 EUR
+    Wise                            200 EUR
+
+2026/3/9 WIse EUR -> JPY
+    Wise                            -200 EUR
+    Wise Fees                       0,92 EUR
+    Wise                            36455 JPY ((1/183,115 EUR))
+
+2026/3/10 Karaoke with Shadow
+    Wise                            -2500 JPY
+    Entertainment                   2500 JPY
+
+2026/3/10 Midnight macdonalds
+    Wise                            -1140 JPY
+    Takeout                         1140 JPY
+
+2026/3/10 Japan transport
+    Cash                            -5000 JPY
+    Train                           5000 JPY
+
+2026/3/10 MrDonut Before Shadow metting
+    Wise                            -732 JPY
+    Takeout                         732 JPY
+
+2026/3/10 More Gifts from Donki
+    Wise                            -6815 JPY
+    Gifts                           6815 JPY
+
+2026/3/10 Tower refcords more oshikatsu
+    Wise                            -1420 JPY
+    Hololive                        1420 JPY
+
+2026/3/10 More Donki Gooods
+    Wise                            -2310 JPY
+    Gifts                           2310 JPY
+
+2026/3/10 Maxim Frieren figure gift
+    Wise                            -1990 JPY
+    Gifts                           1990 JPY
+
+2026/3/10 Baunti Miku Figure gift
+    Wise                            -4990 JPY
+    Gifts                           4990 JPY
+
+2026/3/10 More Donki gifts
+    Wise                            -1671 JPY
+    Gifts                           1671 JPY
+
+2026/3/10 DVD/CD Player Ender's Dad
+    Wise                            -6580 JPY
+    Ender Debt                      6580 JPY
+
+2026/3/10 Yakitori with Shadowfokx
+    Wise                            -4650 JPY
+    Takeout                         4650 JPY
+
+2026/3/10 Last Karaoke with Shadowfokx
+    Wise                            -1437 JPY ; Exchanged for strong zeros
+    Entertainment                   1437 JPY
+
+2026/3/10 Spotify
+    Unicredit Card                  -9,97 EUR
+    Spotify                         9,97 EUR
+
+2026/3/11 Travel Sofia -> Varna
+    Unicredit Card                  -18 EUR
+    Bus                             18 EUR
+
+2026/3/12 Endfield season pass
+    Wise                            -1220 JPY
+    Endfield                        1220 JPY
+
+2026/3/12 Wise -> JPY
+    Wise                            -200 EUR
+    Wise Fees                       0,92 EUR
+    Wise                            36311 JPY ((1/182,395 EUR))
+
+2026/3/12 Internet refund magic
+    Flight                          -19,08 EUR
+    Flight                          0,19 EUR
+    Unicredit Card                  18,89 EUR
+
+2026/3/13 Breakfast
+    Unicredit Card                  -1,60 EUR
+    Takeout                         1,60 EUR
+
+2026/3/13 Lunch
+    Cash                            -5 EUR
+    Takeout                         5 EUR
+
+2026/3/13 Brother money for coffee
+    Unicredit Card                  -5 EUR
+    Takeout                         5 EUR
+
+2026/3/13 Unicredit Card fees or smth??? Maybe scam, look into it
+    Unicredit Card                  -3,88 EUR
+    Unicredit Fees                  3,88 EUR
+
+2026/3/13 Wise -> Investment
+    Wise                            -50 EUR
+    Wise Investment                 50 EUR
+
+2026/3/14 Dinner
+    Food Vouchers                   -12,54 EUR
+    Takeout                         12,54 EUR
+
+2026/3/15 Bus
+    Unicredit Card                  -0,51 EUR
+    Bus                             0,51 EUR
+
+
+2026/3/15 Bus go parents
+    Unicredit Card                  -0,51 EUR
+    Bus                             0,51 EUR
+
+2026/3/15 Bus return parents
+    Unicredit Card                  -0,51 EUR
+    Bus                             0,51 EUR
+
+2026/3/15 Dinner??
+    Food Vouchers                   -7,97 EUR
+    Takeout                         7,97 EUR
+
+2026/3/15 JP Steam Account Joysound Karaoke
+    Wise                            -1500 JPY
+    Karaoke Sub                     1500 JPY
+
+2026/3/16 Dinner
+    Food Vouchers                   -5,80 EUR
+    Takeout                         5,80 EUR
+
+2026/3/17 Dinner
+    Food Vouchers                   -6,92 EUR
+    Takeout                         6,92 EUR
+
+2026/3/17 Vending Machine Choco
+    Cash                            -0,5 EUR
+    Takeout                         0,5 EUR
+
+2026/3/17 Lunch
+    Food Vouchers                   -5,67 EUR
+    Takeout                         5,67 EUR
+
+2026/3/17 Zenmarket last shipment
+    Wise                            -6980 JPY
+    Zenmarket                       6980 JPY
+
+2026/3/18 Shadowfoxk Mio acrylic
+    Wise                            -1980 JPY
+    Hololive                        1980 JPY
+
+2026/3/19 Bus
+    Unicredit Card                  -0,51 EUR
+    Bus                             0,51 EUR
+
+2026/3/19 Discord single month
+    Unicredit Card                  -9,99 EUR
+    Discord                         9,99 EUR
+
+2026/3/19 Lunch
+    Food Vouchers                   -5,41 EUR
+    Takeout                         5,41 EUR
+
+2026/3/20 Bus
+    Unicredit Card                  -0,51 EUR
+    Bus                             0,51 EUR
+
+2026/3/20 Lunch
+    Food Vouchers                   -5,22 EUR
+    Takeout                         5,22 EUR
+
+2026/3/20 Bus
+    Unicredit Card                  -0,51 EUR
+    Bus                             0,51 EUR
+
+2026/3/20 Miofa Keychain Shadowfoxk
+    Wise                            -1210 JPY
+    Hololive                        1210 JPY
+
+2026/3/20 Mio and Fubuki Villain Style MZ
+    Wise                            -20720 JPY
+    MZ                              20720 JPY
+
+2026/3/22 Hoshiyomi Fanclub
+    Wise                            -990 JPY
+    Hoshiyomi Fanclub               990 JPY
+
+2026/3/23 Bus
+    Unicredit Card                  -0,51 EUR
+    Bus                             0,51 EUR
+
+2026/3/23 Smash Burger
+    Unicredit Card                  -9,50 EUR
+    Takeout                         9,50 EUR
+
+2026/3/24 Github SethClydesdale Donation
+    Unicredit Card                  -4,34 EUR
+    Donations                       4,34 EUR
+
+2026/3/24 Dari Takeout
+    Unicredit Card                  -3,88 EUR
+    Takeout                         3,88 EUR
+
+2026/3/24 Lunch
+    Cash                            -5,70 EUR
+    Takeout                         5,70 EUR
+
+2026/3/24 Groceries and Dinner
+    Food Vouchers                   -22,85 EUR
+    Groceries                       22,85 EUR
+
+2026/3/24 Father Money
+    DSK Personal                    -25 EUR
+    Father Exp                      25 EUR
+
+2026/3/25 Unicredit Fees
+    Unicredit Card                  -9,65 EUR
+    Unicredit Fees                  9,65 EUR
+
+2026/3/25 Goose Membership
+    Unicredit Card                  -0,99 EUR
+    Youtube Membership              0,99 EUR
+
+2026/3/25 Ender unpaid bills
+    Ender Inc                       -30 EUR
+    Ender Debt                      30 EUR
+
+2026/3/25 Lunch
+    Food Vouchers                   -5,42 EUR
+    Takeout                         5,42 EUR
+
+2026/3/25 Void!
+    Cash                            -6,09 EUR
+    Void                            6,09 EUR
+
+2026/3/26 Lunch
+    Food Vouchers                   -4,95 EUR
+    Takeout                         4,95 EUR
+
+2026/3/26 Testing out Web Karaoke
+    Wise                            -1045 JPY
+    Karaoke Sub                     1045 JPY
+
+2026/3/27 Unicredit Fees
+    Unicredit Card                  -1,02 EUR
+    Unicredit Fees                  1,02 EUR
+
+2026/3/27 Endfield Monthly Pass
+    Wise                            -610 JPY
+    Endfield                        610 JPY
+
+2026/3/27 Lunch
+    Cash                            -5,80 EUR
+    Takeout                         5,80 EUR
+
+2026/3/27 Chocolate drink
+    Cash                            -0,5 EUR
+    Takeout                         0,5 EUR
+
+2026/3/27 Dinner Douner
+    Cash                            -4,60 EUR
+    Takeout                         4,60 EUR
+
+2026/3/27 Sweets for dinner
+    Food Vouchers                   -3,22 EUR
+    Groceries                       3,22 EUR
+
+2026/3/29 Ender Rent money
+    Ender Inc                       -100 EUR
+    Cash                            100 EUR
+
+2026/3/30 University Supplies
+    Cash                            -2 EUR
+    University                      2 EUR
+
+2026/3/30 Lunch
+    Cash                            -3,88 EUR
+    Takeout                         3,88 EUR
+
+2026/3/30 Unicredit -> DSK
+    Unicredit Card                  -20 EUR
+    DSK Personal                    20 EUR
+
+2026/3/30 DSK Fees
+    DSK Personal                    -1,39 EUR
+    DSK Fees                        1,39 EUR
+
+2026/3/31 Fubuki Membership
+    Unicredit Card                  -2,49 EUR
+    Youtube Membership              2,49 EUR
+
+2026/3/31 Lunch
+    Cash                            -5,50 EUR
+    Takeout                         5,50 EUR
+
+2026/3/31 Dinner
+    Cash                            -4,60 EUR
+    Takeout                         4,60 EUR
+
+2026/3/31 Apartment Bills Month 2 and 3
+    Cash                            -30 EUR
+    Apartment Taxes                 30 EUR
+
+2026/3/31 Endfield origin pass
+    Wise                            -120 JPY
+    Endfield                        120 JPY
+
+2026/3/31 Wise Interest
+    Wise Investment                 0,06 EUR
+    Investment Inc                  -0,06 EUR
+
+2026/3/31 DSK Fees
+    DSK Personal                    -1,02 EUR
+    DSK Fees                        1,02 EUR
+
+2026/4/1 Lunch
+    Cash                            -5,20 EUR
+    Takeout                         5,20 EUR
+
+2026/4/1 Dinner
+    Cash                            -4,60 EUR
+    Takeout                         4,60 EUR
+
+2026/4/1 Customs!!!
+    Cash                            -1,53 EUR
+    Customs                         1,53 EUR
+
+2026/4/1 Mio Membership
+    Unicredit Card                  -2,49 EUR
+    Youtube Membership              2,49 EUR
+
+2026/4/1 Earendel Patreon
+    Unicredit Card                  -1,80 EUR
+    Patreon                         1,80 EUR
+
+2026/4/1 Food Vouchers Filled YAY
+    SSV Inc                         -102,26 EUR
+    Food Vouchers                   102,26 EUR
+
+2026/4/2 Salary YAY
+    SSV Inc                         -781,14 EUR
+    Unicredit Card                  781,14 EUR
+
+2026/4/2 Father Expenses
+    Unicredit Card                  -125 EUR
+    Father Exp                      125 EUR
+
+2026/4/2 Unicredit -> Wise
+    Unicredit Card                  -400 EUR
+    Wise                            400 EUR
+
+2026/4/2 Unicredit -> DSK
+    Unicredit Card                  -160 EUR
+    DSK Personal                    160 EUR
+
+2026/4/2 Lunch
+    Food Vouchers                   -5,73 EUR
+    Takeout                         5,73 EUR
+
+2026/4/2 Snacks
+    Food Vouchers                   -2,33 EUR
+    Takeout                         2,33 EUR
+
+2026/4/2 Mobal Fee
+    Wise                            -900 JPY
+    JP Bills                        900 JPY
+
+2026/4/2 Wise EUR -> JPY
+    Wise                            -200 EUR
+    Wise Fees                       0,92 EUR
+    Wise                            36626 JPY ((1/183,975 EUR))
+
+2026/4/2 Dinner
+    Cash                            -4,60 EUR
+    Takeout                         4,60 EUR
+
+2026/4/3 Brother loaning money
+    Unicredit Card                  -10 EUR
+    Valentin                        10 EUR
+
+2026/4/3 Internet Bill
+    Unicredit Card                  -22,90 EUR
+    Bills                           22,90 EUR
+
+2026/4/3 Pixiv Monthly
+    Wise                            -6200 JPY
+    Fanbox                          6200 JPY
+
+2026/4/3 Suisei FC
+    Wise                            -990 JPY
+    Hoshiyomi Fanclub               990 JPY
+
+2026/4/3 Mom money for bills
+    Mother Inc                      -50 EUR
+    Cash                            50 EUR
+
+2026/4/4 Bus to Parents
+    Unicredit Card                  -0,51 EUR
+    Bus                             0,51 EUR
+
+2026/4/5 Bus to Home
+    Unicredit Card                  -0,51 EUR
+    Bus                             0,51 EUR
+
+2026/4/5 Endfield Rossi got
+    Wise                            -10000 JPY
+    Endfield                        10000 JPY
+
+2026/4/6 Bills Electricity and Water
+    Cash                            -30 EUR
+    Bills                           30 EUR
+
+2026/4/6 DSK Loan payoff
+    DSK Personal                    -12,66 EUR
+    DSK Personal                    -157,09 EUR
+    DSK Fees                        12,66 EUR
+    DSK Loan                        55,18 EUR
+    DSK Fees                        101,91 EUR
+
+2026/4/6 Lunch
+    Food Vouchers                   -4,09 EUR
+    Takeout                         4,09 EUR
+
+2026/4/6 Dinner
+    Food Vouchers                   -7,18 EUR
+    Takeout                         7,18 EUR
+
+2026/4/8 Giving out Candy! for Birthday tomorrow
+    Food Vouchers                   -39,19 EUR
+    Groceries                       39,19 EUR
+
+2026/4/9 Spotify
+    Unicredit Card                  -9,97 EUR
+    Spotify                         9,97 EUR
+
+2026/4/9 Birthday Gifts
+    Mother Inc                      -50 EUR
+    Grandma Inc                     -50 EUR
+    DSK Personal                    -0,36 EUR
+    DSK Fees                        0,36 EUR
+    Wise                            100 EUR
+
+; Newest
+
