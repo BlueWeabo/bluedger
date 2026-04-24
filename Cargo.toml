@@ -29,7 +29,7 @@ egui = "0.34.1"
 eframe = { version = "0.34.1", features = ["persistence"] }
 wasm-bindgen-futures = "0.4.50"
 web-sys = "0.3.70"              # to access the DOM (to hide the loading text)
-ehttp = "0.7.1"
+ehttp = { version = "0.7.1", features = ["json"] }
 
 [profile.release]
 opt-level = 2 # fast and small wasm

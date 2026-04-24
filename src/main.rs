@@ -7,7 +7,6 @@ use axum::{
     http::StatusCode,
     Json, Router,
 };
-#[cfg(not(target_arch = "wasm32"))]
 use serde::{Deserialize, Serialize};
 
 // When compiling for server api
@@ -17,30 +16,35 @@ async fn main() {
     env_logger::init();
 
     let app = Router::new()
-        .route("/files", get(get_file))
-        .route("/files", post(update_file));
+        .route("/api/get", post(get_file))
+        .route("/api/update", post(update_file));
     let listener = tokio::net::TcpListener::bind("0.0.0.0:21000").await.unwrap();
     axum::serve(listener, app).await.unwrap();
 }
 
 #[cfg(not(target_arch = "wasm32"))]
 async fn get_file(Json(payload): Json<FileObject>,) -> (StatusCode, Json<FileObject>) {
+    use std::{fmt::format, fs::read_to_string};
+    let year = payload.year;
+    let month = payload.month;
+    let contents = read_to_string(format(format_args!("/home/blueweabo/.config/bluedger/{}/{}.dat", year, month))).unwrap();
     let file = FileObject {
-        year: 2026,
-        month: 3,
-        contents: "12".to_owned(),
+        year,
+        month,
+        contents,
     };
     (StatusCode::OK, Json(file))
 }
 
 #[cfg(not(target_arch = "wasm32"))]
-async fn update_file(Json(payload): Json<FileObject>,) -> (StatusCode, Json<FileObject>) {
-    let file = FileObject {
-        year: 2026,
-        month: 3,
-        contents: "12".to_owned(),
-    };
-    (StatusCode::OK, Json(file))
+async fn update_file(Json(payload): Json<FileObject>,) -> (StatusCode) {
+    use std::{fmt::format, fs::{write}};
+    let year = payload.year;
+    let month = payload.month;
+    let contents = payload.contents;
+
+    let _ = write(format(format_args!("/home/blueweabo/.config/bluedger/{}/{}.dat", year, month)), contents);
+    (StatusCode::OK)
 }
 
 #[cfg(not(target_arch = "wasm32"))]

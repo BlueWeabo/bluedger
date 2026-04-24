@@ -3,8 +3,6 @@ use std::sync::mpsc::{channel, Receiver, Sender};
 
 #[cfg(target_arch = "wasm32")]
 use egui::{Id, Rangef, Vec2};
-#[cfg(target_arch = "wasm32")]
-use rfd::{AsyncFileDialog};
 
 #[cfg(target_arch = "wasm32")]
 #[derive(serde::Deserialize, serde::Serialize)]
@@ -108,20 +106,27 @@ impl eframe::App for TemplateApp {
                     let available_size = Vec2::new(ui_available_size.x, ui_available_size.y / 2.0);
                     ui.vertical(|ui| {
                         if ui.add_sized(available_size, egui::Button::new("Load File")).clicked() {
-                            let sender = self.text_channel.0.clone();
-                            let task = AsyncFileDialog::new().pick_file();
                             let ctx = ui.ctx().clone();
-                            execute(async move {
-                                let file = task.await;
-                                if let Some(file) = file {
-                                    let text = file.read().await;
-                                    let _ = sender.send(String::from_utf8_lossy(&text).to_string());
+                            let sender = self.text_channel.0.clone();
+                            ehttp::fetch(ehttp::Request::post_json("/api/get", &FileObject {
+                                year: self.year.parse().unwrap(),
+                                month: self.month.parse().unwrap(),
+                                contents: "".to_owned(),
+                                }).unwrap(), move |response| {
+                                    let file = response.unwrap().json::<FileObject>().unwrap();
+                                    let _ = sender.send(file.contents);
                                     ctx.request_repaint();
-                                }
-                            });
+                                });
                         }
                         if ui.add_sized(available_size, egui::Button::new("Save File")).clicked() {
-                            // save the file
+                            let ctx = ui.ctx().clone();
+                            ehttp::fetch(ehttp::Request::post_json("/api/update", &FileObject {
+                                year: self.year.parse().unwrap(),
+                                month: self.month.parse().unwrap(),
+                                contents: self.last_loaded_file_contents.clone(),
+                                }).unwrap(), move |_| {
+                                    ctx.request_repaint();
+                                });
                         }
                     });
                 });
@@ -159,4 +164,13 @@ fn powered_by_egui_and_eframe(ui: &mut egui::Ui) {
 #[cfg(target_arch = "wasm32")]
 fn execute<F: Future<Output = ()> + 'static>(f: F) {
     wasm_bindgen_futures::spawn_local(f);
+}
+
+#[cfg(target_arch = "wasm32")]
+#[derive(serde::Serialize)]
+#[derive(serde::Deserialize)]
+struct FileObject {
+    year: u64,
+    month: u64,
+    contents: String,
 }

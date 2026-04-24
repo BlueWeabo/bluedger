@@ -1051,6 +1051,8 @@ checksum = "b2f1b93eb2e039aaff63ce07cca59bd1dca02f2ce30075a17b619d2c42f56efc"
 dependencies = [
  "document-features",
  "js-sys",
+ "serde",
+ "serde_json",
  "ureq",
  "wasm-bindgen",
  "wasm-bindgen-futures",
