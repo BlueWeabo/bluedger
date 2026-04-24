@@ -1,8 +1,12 @@
+#[cfg(target_arch = "wasm32")]
 use std::sync::mpsc::{channel, Receiver, Sender};
 
+#[cfg(target_arch = "wasm32")]
 use egui::{Id, Rangef, Vec2};
+#[cfg(target_arch = "wasm32")]
 use rfd::{AsyncFileDialog};
 
+#[cfg(target_arch = "wasm32")]
 #[derive(serde::Deserialize, serde::Serialize)]
 #[serde(default)]
 pub struct TemplateApp {
@@ -13,6 +17,7 @@ pub struct TemplateApp {
     text_channel: (Sender<String>, Receiver<String>),
 }
 
+#[cfg(target_arch = "wasm32")]
 impl Default for TemplateApp {
     fn default() -> Self {
         Self {
@@ -24,6 +29,7 @@ impl Default for TemplateApp {
     }
 }
 
+#[cfg(target_arch = "wasm32")]
 impl TemplateApp {
     // Called on startup/open
     pub fn new(cc: &eframe::CreationContext<'_>) -> Self {
@@ -35,6 +41,7 @@ impl TemplateApp {
     }
 }
 
+#[cfg(target_arch = "wasm32")]
 impl eframe::App for TemplateApp {
     /// Called by the framework to save state before shutdown.
     fn save(&mut self, storage: &mut dyn eframe::Storage) {
@@ -133,6 +140,8 @@ impl eframe::App for TemplateApp {
     }
 }
 
+
+#[cfg(target_arch = "wasm32")]
 fn powered_by_egui_and_eframe(ui: &mut egui::Ui) {
     ui.horizontal(|ui| {
         ui.spacing_mut().item_spacing.x = 0.0;
@@ -145,14 +154,6 @@ fn powered_by_egui_and_eframe(ui: &mut egui::Ui) {
         );
         ui.label(".");
     });
-}
-
-#[cfg(not(target_arch = "wasm32"))]
-fn execute<F: Future<Output = ()> + Send + 'static>(f: F) {
-    // this is stupid... use any executor of your choice instead
-
-    use smol::future::block_on;
-    std::thread::spawn(move || block_on(f));
 }
 
 #[cfg(target_arch = "wasm32")]

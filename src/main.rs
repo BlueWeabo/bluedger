@@ -1,29 +1,55 @@
 #![warn(clippy::all, rust_2018_idioms)]
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")] // hide console window on Windows in release
 
-// When compiling natively:
 #[cfg(not(target_arch = "wasm32"))]
-fn main() -> eframe::Result {
-    env_logger::init(); // Log to stderr (if you run with `RUST_LOG=debug`).
+use axum::{
+    routing::{get, post},
+    http::StatusCode,
+    Json, Router,
+};
+#[cfg(not(target_arch = "wasm32"))]
+use serde::{Deserialize, Serialize};
 
-    let native_options = eframe::NativeOptions {
-        viewport: egui::ViewportBuilder::default()
-            .with_inner_size([400.0, 300.0])
-            .with_min_inner_size([300.0, 220.0])
-            .with_icon(
-                // NOTE: Adding an icon is optional
-                eframe::icon_data::from_png_bytes(
-                    &include_bytes!("../assets/favicon-512x512.png")[..],
-                )
-                .expect("Failed to load icon"),
-            ),
-        ..Default::default()
+// When compiling for server api
+#[cfg(not(target_arch = "wasm32"))]
+#[tokio::main]
+async fn main() {
+    env_logger::init();
+
+    let app = Router::new()
+        .route("/files", get(get_file))
+        .route("/files", post(update_file));
+    let listener = tokio::net::TcpListener::bind("0.0.0.0:21000").await.unwrap();
+    axum::serve(listener, app).await.unwrap();
+}
+
+#[cfg(not(target_arch = "wasm32"))]
+async fn get_file(Json(payload): Json<FileObject>,) -> (StatusCode, Json<FileObject>) {
+    let file = FileObject {
+        year: 2026,
+        month: 3,
+        contents: "12".to_owned(),
     };
-    eframe::run_native(
-        "eframe template",
-        native_options,
-        Box::new(|cc| Ok(Box::new(bluedger::TemplateApp::new(cc)))),
-    )
+    (StatusCode::OK, Json(file))
+}
+
+#[cfg(not(target_arch = "wasm32"))]
+async fn update_file(Json(payload): Json<FileObject>,) -> (StatusCode, Json<FileObject>) {
+    let file = FileObject {
+        year: 2026,
+        month: 3,
+        contents: "12".to_owned(),
+    };
+    (StatusCode::OK, Json(file))
+}
+
+#[cfg(not(target_arch = "wasm32"))]
+#[derive(Serialize)]
+#[derive(Deserialize)]
+struct FileObject {
+    year: u64,
+    month: u64,
+    contents: String,
 }
 
 // When compiling to web using trunk:
