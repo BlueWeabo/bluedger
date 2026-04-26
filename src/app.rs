@@ -5,7 +5,10 @@ use std::sync::mpsc::{channel, Receiver, Sender};
 use egui::{Id, Rangef, Vec2};
 
 #[cfg(target_arch = "wasm32")]
-#[derive(serde::Deserialize, serde::Serialize)]
+use serde::{Deserialize, Serialize};
+
+#[cfg(target_arch = "wasm32")]
+#[derive(Deserialize, Serialize)]
 #[serde(default)]
 pub struct TemplateApp {
     last_loaded_file_contents: String,
@@ -162,13 +165,7 @@ fn powered_by_egui_and_eframe(ui: &mut egui::Ui) {
 }
 
 #[cfg(target_arch = "wasm32")]
-fn execute<F: Future<Output = ()> + 'static>(f: F) {
-    wasm_bindgen_futures::spawn_local(f);
-}
-
-#[cfg(target_arch = "wasm32")]
-#[derive(serde::Serialize)]
-#[derive(serde::Deserialize)]
+#[derive(Deserialize, Serialize)]
 struct FileObject {
     year: u64,
     month: u64,

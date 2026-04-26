@@ -7,6 +7,7 @@ use axum::{
     http::StatusCode,
     Json, Router,
 };
+#[cfg(not(target_arch = "wasm32"))]
 use serde::{Deserialize, Serialize};
 
 // When compiling for server api
@@ -48,8 +49,7 @@ async fn update_file(Json(payload): Json<FileObject>,) -> (StatusCode) {
 }
 
 #[cfg(not(target_arch = "wasm32"))]
-#[derive(Serialize)]
-#[derive(Deserialize)]
+#[derive(Deserialize, Serialize)]
 struct FileObject {
     year: u64,
     month: u64,
