@@ -1,5 +1,5 @@
 #[cfg(target_arch = "wasm32")]
-use std::sync::mpsc::{channel, Receiver, Sender};
+use std::sync::mpsc::{Receiver, Sender, channel};
 
 #[cfg(target_arch = "wasm32")]
 use egui::{Id, Rangef, Vec2};
@@ -8,14 +8,28 @@ use egui::{Id, Rangef, Vec2};
 use serde::{Deserialize, Serialize};
 
 #[cfg(target_arch = "wasm32")]
+use crate::{FileObject, Funds};
+
+#[cfg(target_arch = "wasm32")]
 #[derive(Deserialize, Serialize)]
 #[serde(default)]
 pub struct TemplateApp {
     last_loaded_file_contents: String,
     year: String,
     month: String,
+    assets: Funds,
+    last_month_expenses: Funds,
+    current_expenses: Funds,
     #[serde(skip)]
-    text_channel: (Sender<String>, Receiver<String>),
+    channel_file: (Sender<String>, Receiver<String>),
+    #[serde(skip)]
+    channel_assets: (Sender<Funds>, Receiver<Funds>),
+    #[serde(skip)]
+    channel_last_expenses: (Sender<Funds>, Receiver<Funds>),
+    #[serde(skip)]
+    channel_current_expenses: (Sender<Funds>, Receiver<Funds>),
+    #[serde(skip)]
+    update: bool,
 }
 
 #[cfg(target_arch = "wasm32")]
@@ -25,7 +39,26 @@ impl Default for TemplateApp {
             last_loaded_file_contents: "test".to_owned(),
             year: "".to_owned(),
             month: "".to_owned(),
-            text_channel: channel(),
+            channel_file: channel(),
+            assets: Funds {
+                amounts: Vec::new(),
+                currencies: Vec::new(),
+                size: 0,
+            },
+            last_month_expenses: Funds {
+                amounts: Vec::new(),
+                currencies: Vec::new(),
+                size: 0,
+            },
+            current_expenses: Funds {
+                amounts: Vec::new(),
+                currencies: Vec::new(),
+                size: 0,
+            },
+            channel_assets: channel(),
+            channel_last_expenses: channel(),
+            channel_current_expenses: channel(),
+            update: false,
         }
     }
 }
@@ -44,21 +77,61 @@ impl TemplateApp {
 
 #[cfg(target_arch = "wasm32")]
 impl eframe::App for TemplateApp {
-    /// Called by the framework to save state before shutdown.
     fn save(&mut self, storage: &mut dyn eframe::Storage) {
         eframe::set_value(storage, eframe::APP_KEY, self);
     }
 
-    /// Called each time the UI needs repainting, which may be many times per second.
     fn ui(&mut self, ui: &mut egui::Ui, _frame: &mut eframe::Frame) {
-        // Put your widgets into a `SidePanel`, `TopBottomPanel`, `CentralPanel`, `Window` or `Area`.
-        // For inspiration and more examples, go to https://emilk.github.io/egui
-        let text_editor_id : Id = Id::new("text_editor");
-        if let Ok(text) = self.text_channel.1.try_recv() {
+        let text_editor_id: Id = Id::new("text_editor");
+
+        if let Ok(text) = self.channel_file.1.try_recv() {
             self.last_loaded_file_contents = text;
         }
 
-        egui::Panel::top("header").show_inside(ui, |ui|{
+        if let Ok(fund) = self.channel_assets.1.try_recv() {
+            self.assets = fund;
+        }
+
+        if let Ok(fund) = self.channel_last_expenses.1.try_recv() {
+            self.last_month_expenses = fund;
+        }
+
+        if let Ok(fund) = self.channel_current_expenses.1.try_recv() {
+            self.current_expenses = fund;
+        }
+
+        if self.update {
+            let ctx = ui.ctx().clone();
+            let sender_assets = self.channel_assets.0.clone();
+            ehttp::fetch(ehttp::Request::get("/api/assets"),
+                move |response| {
+                    let assets = response.unwrap().json::<Funds>().unwrap();
+                    let _ = sender_assets.send(assets);
+                    ctx.request_repaint();
+                },
+            );
+            let ctx = ui.ctx().clone();
+            let sender_last_expenses = self.channel_last_expenses.0.clone();
+            ehttp::fetch(ehttp::Request::get("/api/last_month_expenses"),
+                move |response| {
+                    let last_month_expenses = response.unwrap().json::<Funds>().unwrap();
+                    let _ = sender_last_expenses.send(last_month_expenses);
+                    ctx.request_repaint();
+                },
+            );
+            let ctx = ui.ctx().clone();
+            let sender_current_expenses = self.channel_current_expenses.0.clone();
+            ehttp::fetch(ehttp::Request::get("/api/current_expenses"),
+                move |response| {
+                    let current_expenses = response.unwrap().json::<Funds>().unwrap();
+                    let _ = sender_current_expenses.send(current_expenses);
+                    ctx.request_repaint();
+                },
+            );
+            self.update = false;
+        }
+
+        egui::Panel::top("header").show_inside(ui, |ui| {
             egui::MenuBar::new().ui(ui, |ui| {
                 // NOTE: no File->Quit on web pages!
                 let is_web = cfg!(target_arch = "wasm32");
@@ -91,63 +164,141 @@ impl eframe::App for TemplateApp {
             });
         });
 
-        let window_width = ui.ctx().input(|i| {i.content_rect()}).width();
-        egui::Panel::left("text_editor_panel").size_range(Rangef::new(window_width * 0.2, window_width * 0.5)).show_inside(ui, |ui|{
-            ui.vertical(|ui| {
-                ui.horizontal(|ui| {
-                    let ui_available_size = ui.available_size();
-                    let available_size = Vec2::new(ui_available_size.x / 3.0, ui_available_size.y);
-                    ui.vertical(|ui| {
-                        ui.label("Year");
-                        ui.add_sized(available_size, egui::TextEdit::singleline(&mut self.year));
+        let window_width = ui.ctx().input(|i| i.content_rect()).width();
+        egui::Panel::left("text_editor_panel")
+            .size_range(Rangef::new(window_width * 0.2, window_width * 0.5))
+            .show_inside(ui, |ui| {
+                ui.vertical(|ui| {
+                    ui.horizontal(|ui| {
+                        let ui_available_size = ui.available_size();
+                        let available_size =
+                            Vec2::new(ui_available_size.x / 3.0, ui_available_size.y);
+                        ui.vertical(|ui| {
+                            ui.add_sized(available_size, egui::Label::new("Year"));
+                            ui.add_sized(
+                                available_size,
+                                egui::TextEdit::singleline(&mut self.year),
+                            );
+                        });
+                        ui.vertical(|ui| {
+                            ui.add_sized(available_size, egui::Label::new("Month"));
+                            ui.add_sized(
+                                available_size,
+                                egui::TextEdit::singleline(&mut self.month),
+                            );
+                        });
+                        let ui_available_size = ui.available_size();
+                        let available_size =
+                            Vec2::new(ui_available_size.x, ui_available_size.y / 2.0);
+                        ui.vertical(|ui| {
+                            if ui
+                                .add_sized(available_size, egui::Button::new("Load File"))
+                                .clicked()
+                            {
+                                self.update = true;
+                                let ctx = ui.ctx().clone();
+                                let sender = self.channel_file.0.clone();
+                                ehttp::fetch(
+                                    ehttp::Request::post_json(
+                                        "/api/get",
+                                        &FileObject {
+                                            year: self.year.parse().unwrap(),
+                                            month: self.month.parse().unwrap(),
+                                            contents: "".to_owned(),
+                                        },
+                                    )
+                                    .unwrap(),
+                                    move |response| {
+                                        let file = response.unwrap().json::<FileObject>().unwrap();
+                                        let _ = sender.send(file.contents);
+                                        ctx.request_repaint();
+                                    },
+                                );
+                            }
+                            if ui
+                                .add_sized(available_size, egui::Button::new("Save File"))
+                                .clicked()
+                            {
+                                self.update = true;
+                                let ctx = ui.ctx().clone();
+                                ehttp::fetch(
+                                    ehttp::Request::post_json(
+                                        "/api/update",
+                                        &FileObject {
+                                            year: self.year.parse().unwrap(),
+                                            month: self.month.parse().unwrap(),
+                                            contents: self.last_loaded_file_contents.clone(),
+                                        },
+                                    )
+                                    .unwrap(),
+                                    move |_| {
+                                        ctx.request_repaint();
+                                    },
+                                );
+                            }
+                        });
                     });
-                    ui.vertical(|ui| {
-                        ui.label("Month");
-                        ui.add_sized(available_size, egui::TextEdit::singleline(&mut self.month));
+                    ui.add_space(10.0);
+                    egui::ScrollArea::vertical().show(ui, |ui| {
+                        ui.add_sized(
+                            ui.available_size(),
+                            egui::TextEdit::multiline(&mut self.last_loaded_file_contents)
+                                .code_editor()
+                                .id(text_editor_id),
+                        );
                     });
-                    let ui_available_size = ui.available_size();
-                    let available_size = Vec2::new(ui_available_size.x, ui_available_size.y / 2.0);
-                    ui.vertical(|ui| {
-                        if ui.add_sized(available_size, egui::Button::new("Load File")).clicked() {
-                            let ctx = ui.ctx().clone();
-                            let sender = self.text_channel.0.clone();
-                            ehttp::fetch(ehttp::Request::post_json("/api/get", &FileObject {
-                                year: self.year.parse().unwrap(),
-                                month: self.month.parse().unwrap(),
-                                contents: "".to_owned(),
-                                }).unwrap(), move |response| {
-                                    let file = response.unwrap().json::<FileObject>().unwrap();
-                                    let _ = sender.send(file.contents);
-                                    ctx.request_repaint();
-                                });
-                        }
-                        if ui.add_sized(available_size, egui::Button::new("Save File")).clicked() {
-                            let ctx = ui.ctx().clone();
-                            ehttp::fetch(ehttp::Request::post_json("/api/update", &FileObject {
-                                year: self.year.parse().unwrap(),
-                                month: self.month.parse().unwrap(),
-                                contents: self.last_loaded_file_contents.clone(),
-                                }).unwrap(), move |_| {
-                                    ctx.request_repaint();
-                                });
-                        }
-                    });
-                });
-                ui.add_space(10.0);
-                egui::ScrollArea::vertical().show(ui, |ui| {
-                    ui.add_sized(ui.available_size(), egui::TextEdit::multiline(&mut self.last_loaded_file_contents).code_editor().id(text_editor_id));
                 });
             });
-        });
 
         egui::CentralPanel::default().show_inside(ui, |ui| {
-            ui.horizontal(|ui| {
-                ui.label("NOOO");
+            ui.vertical(|ui| {
+                ui.horizontal(|ui| {
+                    let ui_size = ui.available_size();
+                    let avail_size = Vec2::new(ui_size.x / 3.0, ui_size.y);
+                    ui.vertical(|ui| {
+                        ui.add_sized(avail_size, egui::Label::new("Current Assets"));
+                        if self.assets.size > 0 {
+                            for i in 0..self.assets.size {
+                                ui.horizontal(|ui| {
+                                    ui.label(
+                                        self.assets.amounts.get(i as usize).unwrap().to_string(),
+                                    );
+                                    ui.label(self.assets.currencies.get(i as usize).unwrap());
+                                });
+                            }
+                        }
+                    });
+                    ui.vertical(|ui| {
+                        ui.add_sized(avail_size, egui::Label::new("Last Month Expenses"));
+                        if self.last_month_expenses.size > 0 {
+                            for i in 0..self.last_month_expenses.size {
+                                ui.horizontal(|ui| {
+                                    ui.label(
+                                        self.last_month_expenses.amounts.get(i as usize).unwrap().to_string(),
+                                    );
+                                    ui.label(self.last_month_expenses.currencies.get(i as usize).unwrap());
+                                });
+                            }
+                        }
+                    });
+                    ui.vertical(|ui| {
+                        ui.add_sized(avail_size, egui::Label::new("Last Month Expenses"));
+                        if self.current_expenses.size > 0 {
+                            for i in 0..self.current_expenses.size {
+                                ui.horizontal(|ui| {
+                                    ui.label(
+                                        self.current_expenses.amounts.get(i as usize).unwrap().to_string(),
+                                    );
+                                    ui.label(self.current_expenses.currencies.get(i as usize).unwrap());
+                                });
+                            }
+                        }
+                    });
+                });
             });
         });
     }
 }
-
 
 #[cfg(target_arch = "wasm32")]
 fn powered_by_egui_and_eframe(ui: &mut egui::Ui) {
@@ -162,12 +313,4 @@ fn powered_by_egui_and_eframe(ui: &mut egui::Ui) {
         );
         ui.label(".");
     });
-}
-
-#[cfg(target_arch = "wasm32")]
-#[derive(Deserialize, Serialize)]
-struct FileObject {
-    year: u64,
-    month: u64,
-    contents: String,
 }
