@@ -9,4 +9,5 @@ mod objects;
 
 pub use objects::FileObject;
 pub use objects::Funds;
+pub use objects::YearlyGraphPoints;
 

@@ -13,3 +13,8 @@ pub struct Funds {
     pub currencies: Vec<String>,
     pub size: u64,
 }
+
+#[derive(Deserialize, Serialize)]
+pub struct YearlyGraphPoints {
+    pub points: Vec<[f64; 2]>,
+}
