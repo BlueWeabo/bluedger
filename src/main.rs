@@ -1,9 +1,9 @@
 #![warn(clippy::all, rust_2018_idioms)]
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")] // hide console window on Windows in release
+#![allow(clippy::print_stderr)] // Using eprintln! for error logging in CLI/server context
 
 #[cfg(not(target_arch = "wasm32"))]
 use std::{
-    fmt::format,
     fs::{read_to_string, write},
     process::Command,
 };
@@ -17,7 +17,9 @@ use axum::{
 #[cfg(not(target_arch = "wasm32"))]
 use bluedger::{FileObject, Funds, YearlyGraphPoints};
 #[cfg(not(target_arch = "wasm32"))]
-use chrono::{DateTime, Datelike, Utc};
+use chrono::Datelike as _;
+#[cfg(not(target_arch = "wasm32"))]
+use chrono::{DateTime, Utc};
 
 // When compiling for server api
 #[cfg(not(target_arch = "wasm32"))]
@@ -38,24 +40,23 @@ async fn main() {
         .route("/api/equity_plot", get(equity_plot));
     let listener = tokio::net::TcpListener::bind("0.0.0.0:21000")
         .await
-        .unwrap();
-    axum::serve(listener, app).await.unwrap();
+        .expect("Failed to bind to port 21000");
+    axum::serve(listener, app).await.expect("Failed to serve");
 }
 
 #[cfg(not(target_arch = "wasm32"))]
 async fn get_file(Json(payload): Json<FileObject>) -> (StatusCode, Json<FileObject>) {
     let year = payload.year;
     let month = payload.month;
-    let contents: String;
-    if year == 0 && month == 0 {
-        contents = read_to_string("/home/blueweabo/.config/bluedger/master.dat").unwrap();
+    let contents = if year == 0 && month == 0 {
+        read_to_string("/home/blueweabo/.config/bluedger/master.dat")
+            .expect("Failed to read master.dat")
     } else {
-        contents = read_to_string(format(format_args!(
-            "/home/blueweabo/.config/bluedger/{}/{}.dat",
-            year, month
-        )))
-        .unwrap();
-    }
+        read_to_string(format!(
+            "/home/blueweabo/.config/bluedger/{year}/{month}.dat",
+        ))
+        .expect("Failed to read monthly file")
+    };
     let file = FileObject {
         year,
         month,
@@ -71,15 +72,14 @@ async fn update_file(Json(payload): Json<FileObject>) -> StatusCode {
     let contents = payload.contents;
 
     if year == 0 && month == 0 {
-        let _ = write("/home/blueweabo/.config/bluedger/master.dat", contents);
+        write("/home/blueweabo/.config/bluedger/master.dat", contents)
+            .expect("Failed to write master.dat");
     } else {
-        let _ = write(
-            format(format_args!(
-                "/home/blueweabo/.config/bluedger/{}/{}.dat",
-                year, month
-            )),
+        write(
+            format!("/home/blueweabo/.config/bluedger/{year}/{month}.dat",),
             contents,
-        );
+        )
+        .expect("Failed to write monthly file");
     }
     StatusCode::OK
 }
@@ -98,38 +98,38 @@ async fn total_assets() -> (StatusCode, Json<Funds>) {
     {
         Ok(o) => {
             if !o.status.success() {
-                println!(
+                eprintln!(
                     "command error while getting current assets: {}",
-                    String::from_utf8(o.stderr).unwrap()
+                    String::from_utf8(o.stderr).unwrap_or_default()
                 );
             }
             match String::from_utf8(o.stdout) {
                 Ok(o) => o,
                 Err(e) => {
-                    println!("Error running command while getting assets: {}", e);
-                    "".to_owned()
+                    eprintln!("Error running command while getting assets: {e}");
+                    String::new()
                 }
             }
         }
         Err(e) => {
-            println!("Error running command while getting assets: {}", e);
-            "".to_owned()
+            eprintln!("Error running command while getting assets: {e}");
+            String::new()
         }
     };
-    let iter = output.split("\n");
+    let iter = output.split('\n');
     let mut count = 0;
     let mut amounts: Vec<f64> = Vec::new();
     let mut curr: Vec<String> = Vec::new();
     for val in iter {
         count += 1;
-        let mut split_val = val.split(" ");
+        let mut split_val = val.split_whitespace();
         let value_str = match split_val.next() {
             None => "0 XXX",
             Some(str) => str,
         };
-        let value_parsed = match value_str.replace(",", ".").parse() {
+        let value_parsed = match value_str.replace(',', ".").parse() {
             Err(e) => {
-                println!("Error parsing first value: {}", e);
+                eprintln!("Error parsing first value: {e}");
                 0.0
             }
             Ok(num) => num,
@@ -139,7 +139,7 @@ async fn total_assets() -> (StatusCode, Json<Funds>) {
             None => "0.0 XXX",
             Some(str) => str,
         };
-        curr.push(curr_str.to_string());
+        curr.push(curr_str.to_owned());
     }
     let funds = Funds {
         amounts,
@@ -154,37 +154,43 @@ async fn last_month_expenses() -> (StatusCode, Json<Funds>) {
     let date: DateTime<Utc> = Utc::now();
     let month = date.month();
     let year = date.year();
-    let begin_date: String;
-    let end_date: String;
-    if month == 1 {
-        begin_date = format!("{}/{}/01", year - 1, 12);
-        end_date = format!("{}/{}/31", year - 1, 12);
+    let begin_date = if month == 1 {
+        format!("{year}/12/01", year = year - 1)
     } else {
-        begin_date = format!("{}/{}/01", year, month - 1);
+        format!("{year}/{month}/01", month = month - 1)
+    };
+    let end_date = if month == 1 {
+        format!("{year}/12/31", year = year - 1)
+    } else {
         let end_day = date
             .date_naive()
             .with_day(1)
-            .unwrap()
+            .expect("Failed to set day to 1")
             .with_month(month - 1)
-            .unwrap()
+            .expect("Failed to set month")
             .num_days_in_month();
-        end_date = format!("{}/{}/{}", year, month - 1, end_day);
-    }
-    let output = ledger_balance(begin_date, end_date, "Expenses".to_owned()).await;
-    let iter = output.split("\n");
+        format!(
+            "{year}/{month}/{end_day}",
+            year = year,
+            month = month - 1,
+            end_day = end_day
+        )
+    };
+    let output = ledger_balance(begin_date, end_date, "Expenses".to_owned());
+    let iter = output.split('\n');
     let mut count = 0;
     let mut amounts: Vec<f64> = Vec::new();
     let mut curr: Vec<String> = Vec::new();
     for val in iter {
         count += 1;
-        let mut split_val = val.split(" ");
+        let mut split_val = val.split_whitespace();
         let value_str = match split_val.next() {
             None => "0 XXX",
             Some(str) => str,
         };
-        let value_parsed = match value_str.replace(",", ".").parse() {
+        let value_parsed = match value_str.replace(',', ".").parse() {
             Err(e) => {
-                println!("Error parsing first value: {}", e);
+                eprintln!("Error parsing first value: {e}");
                 0.0
             }
             Ok(num) => num,
@@ -194,7 +200,7 @@ async fn last_month_expenses() -> (StatusCode, Json<Funds>) {
             None => "0.0 XXX",
             Some(str) => str,
         };
-        curr.push(curr_str.to_string());
+        curr.push(curr_str.to_owned());
     }
     let funds = Funds {
         amounts,
@@ -209,24 +215,24 @@ async fn current_expenses() -> (StatusCode, Json<Funds>) {
     let date: DateTime<Utc> = Utc::now();
     let month = date.month();
     let year = date.year();
-    let begin_date = format!("{}/{}/01", year, month);
+    let begin_date = format!("{year}/{month}/01");
     let end_day = date.date_naive().num_days_in_month();
-    let end_date = format!("{}/{}/{}", year, month, end_day);
-    let output = ledger_balance(begin_date, end_date, "Expenses".to_owned()).await;
-    let iter = output.split("\n");
+    let end_date = format!("{year}/{month}/{end_day}");
+    let output = ledger_balance(begin_date, end_date, "Expenses".to_owned());
+    let iter = output.split('\n');
     let mut count = 0;
     let mut amounts: Vec<f64> = Vec::new();
     let mut curr: Vec<String> = Vec::new();
     for val in iter {
         count += 1;
-        let mut split_val = val.split(" ");
+        let mut split_val = val.split_whitespace();
         let value_str = match split_val.next() {
             None => "0 XXX",
             Some(str) => str,
         };
-        let value_parsed = match value_str.replace(",", ".").parse() {
+        let value_parsed = match value_str.replace(',', ".").parse() {
             Err(e) => {
-                println!("Error parsing first value: {}", e);
+                eprintln!("Error parsing first value: {e}");
                 0.0
             }
             Ok(num) => num,
@@ -236,7 +242,7 @@ async fn current_expenses() -> (StatusCode, Json<Funds>) {
             None => "0.0 XXX",
             Some(str) => str,
         };
-        curr.push(curr_str.to_string());
+        curr.push(curr_str.to_owned());
     }
     let funds = Funds {
         amounts,
@@ -249,31 +255,30 @@ async fn current_expenses() -> (StatusCode, Json<Funds>) {
 #[cfg(not(target_arch = "wasm32"))]
 async fn expenses_plot() -> (StatusCode, Json<YearlyGraphPoints>) {
     let date: DateTime<Utc> = Utc::now();
-    let month = date.month() as i32;
+    let month = date.month().cast_signed();
     let year = date.year();
     let mut expense_records = YearlyGraphPoints { points: Vec::new() };
     for val in 0..13 {
-        let begin_date: String;
-        let end_date: String;
-        let year_to_check: i32;
+        let year_to_check = if month - 12 + val <= 0 {
+            year - 1
+        } else {
+            year
+        };
         let month_to_check = if month - 12 + val <= 0 {
-            year_to_check = year - 1;
             month + val
         } else {
-            year_to_check = year;
             month - 12 + val
         };
-        let date: DateTime<Utc> = Utc::now();
-        begin_date = format!("{}/{}/01", year_to_check, month_to_check);
-        let end_day = date
+        let end_day = Utc::now()
             .date_naive()
             .with_day(1)
-            .unwrap()
+            .expect("Failed to set day to 1")
             .with_month(month_to_check as u32)
-            .unwrap()
+            .expect("Failed to set month")
             .num_days_in_month();
-        end_date = format!("{}/{}/{}", year_to_check, month_to_check, end_day);
-        let output = ledger_balance_converted(begin_date, end_date, "Expenses".to_owned()).await;
+        let begin_date = format!("{year_to_check}/{month_to_check}/01");
+        let end_date = format!("{year_to_check}/{month_to_check}/{end_day}");
+        let output = ledger_balance_converted(begin_date, end_date, "Expenses".to_owned());
         expense_records.points.push([val as f64, output]);
     }
     (StatusCode::OK, Json(expense_records))
@@ -282,33 +287,32 @@ async fn expenses_plot() -> (StatusCode, Json<YearlyGraphPoints>) {
 #[cfg(not(target_arch = "wasm32"))]
 async fn income_plot() -> (StatusCode, Json<YearlyGraphPoints>) {
     let date: DateTime<Utc> = Utc::now();
-    let month = date.month() as i32;
+    let month = date.month().cast_signed();
     let year = date.year();
     let mut expense_records = YearlyGraphPoints { points: Vec::new() };
     for val in 0..13 {
-        let begin_date: String;
-        let end_date: String;
-        let year_to_check: i32;
+        let year_to_check = if month - 12 + val <= 0 {
+            year - 1
+        } else {
+            year
+        };
         let month_to_check = if month - 12 + val <= 0 {
-            year_to_check = year - 1;
             month + val
         } else {
-            year_to_check = year;
             month - 12 + val
         };
-        let date: DateTime<Utc> = Utc::now();
-        begin_date = format!("{}/{}/01", year_to_check, month_to_check);
-        let end_day = date
+        let end_day = Utc::now()
             .date_naive()
             .with_day(1)
-            .unwrap()
+            .expect("Failed to set day to 1")
             .with_month(month_to_check as u32)
-            .unwrap()
+            .expect("Failed to set month")
             .num_days_in_month();
-        end_date = format!("{}/{}/{}", year_to_check, month_to_check, end_day);
-        let output = ledger_balance_converted(begin_date, end_date, "Income".to_owned()).await;
-        // Multiple by -1 to get a positive number
-        expense_records.points.push([val as f64, output * (-1.0)]);
+        let begin_date = format!("{year_to_check}/{month_to_check}/01");
+        let end_date = format!("{year_to_check}/{month_to_check}/{end_day}");
+        let output = ledger_balance_converted(begin_date, end_date, "Income".to_owned());
+        // Multiply by -1 to get a positive number
+        expense_records.points.push([val as f64, -output]);
     }
     (StatusCode::OK, Json(expense_records))
 }
@@ -316,30 +320,30 @@ async fn income_plot() -> (StatusCode, Json<YearlyGraphPoints>) {
 #[cfg(not(target_arch = "wasm32"))]
 async fn assets_plot() -> (StatusCode, Json<YearlyGraphPoints>) {
     let date: DateTime<Utc> = Utc::now();
-    let month = date.month() as i32;
+    let month = date.month().cast_signed();
     let year = date.year();
     let mut assets_records = YearlyGraphPoints { points: Vec::new() };
     for val in 0..13 {
-        let end_date: String;
-        let year_to_check: i32;
+        let year_to_check = if month - 12 + val <= 0 {
+            year - 1
+        } else {
+            year
+        };
         let month_to_check = if month - 12 + val <= 0 {
-            year_to_check = year - 1;
             month + val
         } else {
-            year_to_check = year;
             month - 12 + val
         };
-        let date: DateTime<Utc> = Utc::now();
-        let end_day = date
+        let end_day = Utc::now()
             .date_naive()
             .with_day(1)
-            .unwrap()
+            .expect("Failed to set day to 1")
             .with_month(month_to_check as u32)
-            .unwrap()
+            .expect("Failed to set month")
             .num_days_in_month();
-        end_date = format!("{}/{}/{}", year_to_check, month_to_check, end_day);
+        let end_date = format!("{year_to_check}/{month_to_check}/{end_day}");
         let output =
-            ledger_balance_converted("2000/01/01".to_owned(), end_date, "Assets".to_owned()).await;
+            ledger_balance_converted("2000/01/01".to_owned(), end_date, "Assets".to_owned());
         assets_records.points.push([val as f64, output]);
     }
     (StatusCode::OK, Json(assets_records))
@@ -348,33 +352,32 @@ async fn assets_plot() -> (StatusCode, Json<YearlyGraphPoints>) {
 #[cfg(not(target_arch = "wasm32"))]
 async fn liabilities_plot() -> (StatusCode, Json<YearlyGraphPoints>) {
     let date: DateTime<Utc> = Utc::now();
-    let month = date.month() as i32;
+    let month = date.month().cast_signed();
     let year = date.year();
     let mut assets_records = YearlyGraphPoints { points: Vec::new() };
     for val in 0..13 {
-        let end_date: String;
-        let year_to_check: i32;
+        let year_to_check = if month - 12 + val <= 0 {
+            year - 1
+        } else {
+            year
+        };
         let month_to_check = if month - 12 + val <= 0 {
-            year_to_check = year - 1;
             month + val
         } else {
-            year_to_check = year;
             month - 12 + val
         };
-        let date: DateTime<Utc> = Utc::now();
-        let end_day = date
+        let end_day = Utc::now()
             .date_naive()
             .with_day(1)
-            .unwrap()
+            .expect("Failed to set day to 1")
             .with_month(month_to_check as u32)
-            .unwrap()
+            .expect("Failed to set month")
             .num_days_in_month();
-        end_date = format!("{}/{}/{}", year_to_check, month_to_check, end_day);
+        let end_date = format!("{year_to_check}/{month_to_check}/{end_day}");
         let output =
-            ledger_balance_converted("2000/01/01".to_owned(), end_date, "Liabilities".to_owned())
-                .await;
+            ledger_balance_converted("2000/01/01".to_owned(), end_date, "Liabilities".to_owned());
         // Multiply by -1 so that it is shown as positive on the plot
-        assets_records.points.push([val as f64, output * (-1.0)]);
+        assets_records.points.push([val as f64, -output]);
     }
     (StatusCode::OK, Json(assets_records))
 }
@@ -382,37 +385,37 @@ async fn liabilities_plot() -> (StatusCode, Json<YearlyGraphPoints>) {
 #[cfg(not(target_arch = "wasm32"))]
 async fn equity_plot() -> (StatusCode, Json<YearlyGraphPoints>) {
     let date: DateTime<Utc> = Utc::now();
-    let month = date.month() as i32;
+    let month = date.month().cast_signed();
     let year = date.year();
     let mut assets_records = YearlyGraphPoints { points: Vec::new() };
     for val in 0..13 {
-        let end_date: String;
-        let year_to_check: i32;
+        let year_to_check = if month - 12 + val <= 0 {
+            year - 1
+        } else {
+            year
+        };
         let month_to_check = if month - 12 + val <= 0 {
-            year_to_check = year - 1;
             month + val
         } else {
-            year_to_check = year;
             month - 12 + val
         };
-        let date: DateTime<Utc> = Utc::now();
-        let end_day = date
+        let end_day = Utc::now()
             .date_naive()
             .with_day(1)
-            .unwrap()
+            .expect("Failed to set day to 1")
             .with_month(month_to_check as u32)
-            .unwrap()
+            .expect("Failed to set month")
             .num_days_in_month();
-        end_date = format!("{}/{}/{}", year_to_check, month_to_check, end_day);
+        let end_date = format!("{year_to_check}/{month_to_check}/{end_day}");
         let output =
-            ledger_balance_converted("2000/01/01".to_owned(), end_date, "Equity".to_owned()).await;
+            ledger_balance_converted("2000/01/01".to_owned(), end_date, "Equity".to_owned());
         assets_records.points.push([val as f64, output]);
     }
     (StatusCode::OK, Json(assets_records))
 }
 
 #[cfg(not(target_arch = "wasm32"))]
-async fn ledger_balance_converted(begin_date: String, end_date: String, balances: String) -> f64 {
+fn ledger_balance_converted(begin_date: String, end_date: String, balances: String) -> f64 {
     match Command::new("ledger")
         .arg("-f")
         .arg("/home/blueweabo/.config/bluedger/master.dat")
@@ -431,41 +434,40 @@ async fn ledger_balance_converted(begin_date: String, end_date: String, balances
     {
         Ok(o) => {
             if !o.status.success() {
-                println!(
-                    "command error while getting current assets: {}",
-                    String::from_utf8(o.stderr).unwrap()
+                eprintln!(
+                    "command error while getting balance: {}",
+                    String::from_utf8(o.stderr).unwrap_or_default()
                 );
             }
             match String::from_utf8(o.stdout) {
                 Ok(o) => {
-                    if o == "" {
+                    if o.is_empty() {
                         0.0
                     } else {
                         match o.parse::<f64>() {
                             Ok(v) => v,
                             Err(rv) => {
-                                println!("Error converting to float: {}", rv);
+                                eprintln!("Error converting to float: {rv}");
                                 0.0
                             }
                         }
                     }
                 }
-
                 Err(e) => {
-                    println!("Error running command while getting assets: {}", e);
+                    eprintln!("Error running command: {e}");
                     0.0
                 }
             }
         }
         Err(e) => {
-            println!("Error running command while getting assets: {}", e);
+            eprintln!("Error running command: {e}");
             0.0
         }
     }
 }
 
 #[cfg(not(target_arch = "wasm32"))]
-async fn ledger_balance(begin_date: String, end_date: String, balances: String) -> String {
+fn ledger_balance(begin_date: String, end_date: String, balances: String) -> String {
     match Command::new("ledger")
         .arg("-f")
         .arg("/home/blueweabo/.config/bluedger/master.dat")
@@ -482,28 +484,22 @@ async fn ledger_balance(begin_date: String, end_date: String, balances: String) 
     {
         Ok(o) => {
             if !o.status.success() {
-                println!(
-                    "command error while getting current assets: {}",
-                    String::from_utf8(o.stderr).unwrap()
+                eprintln!(
+                    "command error while getting balance: {}",
+                    String::from_utf8(o.stderr).unwrap_or_default()
                 );
             }
             match String::from_utf8(o.stdout) {
                 Ok(o) => o,
                 Err(e) => {
-                    println!(
-                        "Error converting to String while getting current expenses: {}",
-                        e
-                    );
-                    "".to_owned()
+                    eprintln!("Error converting to String: {e}");
+                    String::new()
                 }
             }
         }
         Err(e) => {
-            println!(
-                "Error running command while getting current expenses: {}",
-                e
-            );
-            "".to_owned()
+            eprintln!("Error running command: {e}");
+            String::new()
         }
     }
 }

@@ -1,3 +1,16 @@
+#![cfg_attr(target_arch = "wasm32", allow(clippy::unwrap_used))]
+#![cfg_attr(target_arch = "wasm32", allow(clippy::get_unwrap))]
+#![cfg_attr(target_arch = "wasm32", allow(clippy::manual_string_new))]
+#![cfg_attr(target_arch = "wasm32", allow(clippy::str_to_string))]
+#![cfg_attr(
+    target_arch = "wasm32",
+    allow(clippy::match_wildcard_for_single_variants)
+)]
+#![cfg_attr(target_arch = "wasm32", allow(clippy::too_many_lines))]
+#![cfg_attr(target_arch = "wasm32", allow(clippy::unused_trait_names))]
+#![cfg_attr(target_arch = "wasm32", allow(clippy::let_underscore_must_use))]
+#![cfg_attr(target_arch = "wasm32", allow(clippy::let_underscore_untyped))]
+
 #[cfg(target_arch = "wasm32")]
 use std::sync::mpsc::{Receiver, Sender, channel};
 
@@ -14,7 +27,7 @@ use serde::{Deserialize, Serialize};
 use crate::{FileObject, Funds, YearlyGraphPoints};
 
 #[cfg(target_arch = "wasm32")]
-use egui_plot::{GridMark, Legend, Line, Plot, PlotPoint, PlotPoints, HoverPosition};
+use egui_plot::{GridMark, HoverPosition, Legend, Line, Plot, PlotPoint, PlotPoints};
 
 #[cfg(target_arch = "wasm32")]
 use chrono::{DateTime, Datelike, Utc};
@@ -412,7 +425,7 @@ impl eframe::App for TemplateApp {
                             for i in 0..self.assets.size {
                                 ui.horizontal(|ui| {
                                     ui.label(
-                                        self.assets.amounts.get(i as usize).unwrap().to_string()
+                                        self.assets.amounts.get(i as usize).unwrap().to_string(),
                                     );
                                     ui.label(self.assets.currencies.get(i as usize).unwrap());
                                 });
@@ -475,10 +488,8 @@ impl eframe::App for TemplateApp {
                             HoverPosition::NearDataPoint {
                                 plot_name,
                                 position,
-                                index,
-                            } => {
-                                Some(format!("{}: {:.2} EUR", plot_name, position.y))
-                            }
+                                index: _,
+                            } => Some(format!("{}: {:.2} EUR", plot_name, position.y)),
                             _ => None,
                         })
                         .x_axis_formatter(special_x_axis_formatter_previous_months)
